@@ -5,6 +5,8 @@ import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.kravemir.techdraw.DOCmaker;
 import org.kravemir.techdraw.api.BoxedElement;
+import org.kravemir.techdraw.api.GroupProvider;
+import org.kravemir.techdraw.api.SvgPartGroup;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
 
@@ -26,18 +28,18 @@ import java.util.stream.Collectors;
 public class App {
 
 
-    public static Collection<DOCmaker.GroupGen> createDeskGroups(Collection<Desk> desks) {
+    public static Collection<GroupProvider> createDeskGroups(Collection<Desk> desks) {
         Map<Double,List<Desk>> byWidth = desks.stream().collect(Collectors.groupingBy(part -> part.getWidth()));
-        return byWidth.entrySet().stream().map(entry -> (DOCmaker.GroupGen) (doc, svgNS) -> {
+        return byWidth.entrySet().stream().map(entry -> (GroupProvider) (doc, svgNS) -> {
             Collection<BoxedElement> elements = entry.getValue().stream().map(desk -> desk.renderSVG(doc,svgNS)).collect(Collectors.toList());
 
-            DOCmaker.ShowGroup showGroup = new DOCmaker.ShowGroup();
-            showGroup.children = elements;
-            showGroup.metadata = new HashMap<String, String>();
-            showGroup.metadata.put("Desk decor:", "svetly buk");
-            showGroup.metadata.put("Desk width:", String.format("%.1f",entry.getKey()));
+            SvgPartGroup svgPartGroup = new SvgPartGroup();
+            svgPartGroup.children = elements;
+            svgPartGroup.metadata = new HashMap<>();
+            svgPartGroup.metadata.put("Desk decor:", "svetly buk");
+            svgPartGroup.metadata.put("Desk width:", String.format("%.1f",entry.getKey()));
 
-            return showGroup;
+            return svgPartGroup;
         }).collect(Collectors.toList());
     }
 
@@ -48,7 +50,7 @@ public class App {
                 new Desk(1000, 200, 12, new boolean[] {true,true,true,true})
         );
 
-        Collection<DOCmaker.GroupGen> groups = createDeskGroups(parts);
+        Collection<GroupProvider> groups = createDeskGroups(parts);
 
         Document doc = new DOCmaker().makeDoc(groups);
 
