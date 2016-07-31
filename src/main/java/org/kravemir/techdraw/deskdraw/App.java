@@ -4,6 +4,7 @@ import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.kravemir.techdraw.DOCmaker;
+import org.kravemir.techdraw.api.BoxedElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
 
@@ -16,13 +17,29 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Miroslav Kravec
  */
 public class App {
+
+
+    public static Collection<DOCmaker.GroupGen> createDeskGroups(Collection<Desk> desks) {
+        Map<Double,List<Desk>> byWidth = desks.stream().collect(Collectors.groupingBy(part -> part.getWidth()));
+        return byWidth.entrySet().stream().map(entry -> (DOCmaker.GroupGen) (doc, svgNS) -> {
+            Collection<BoxedElement> elements = entry.getValue().stream().map(desk -> desk.renderSVG(doc,svgNS)).collect(Collectors.toList());
+
+            DOCmaker.ShowGroup showGroup = new DOCmaker.ShowGroup();
+            showGroup.children = elements;
+            showGroup.metadata = new HashMap<String, String>();
+            showGroup.metadata.put("Desk decor:", "svetly buk");
+            showGroup.metadata.put("Desk width:", String.format("%.1f",entry.getKey()));
+
+            return showGroup;
+        }).collect(Collectors.toList());
+    }
 
     public static void main(String[] args) {
         Collection<Desk> parts = Arrays.asList(
@@ -30,7 +47,10 @@ public class App {
                 new Desk(1000, 200, 18, new boolean[] {true,true,true,true}),
                 new Desk(1000, 200, 12, new boolean[] {true,true,true,true})
         );
-        Document doc = new DOCmaker().makeDoc(parts);
+
+        Collection<DOCmaker.GroupGen> groups = createDeskGroups(parts);
+
+        Document doc = new DOCmaker().makeDoc(groups);
 
         try {
             DOMSource domSource = new DOMSource(doc);

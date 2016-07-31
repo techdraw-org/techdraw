@@ -3,7 +3,6 @@ package org.kravemir.techdraw;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.kravemir.techdraw.api.BoxedElement;
 import org.kravemir.techdraw.containers.TableElement;
-import org.kravemir.techdraw.deskdraw.Desk;
 import org.kravemir.techdraw.elements.LineElement;
 import org.kravemir.techdraw.elements.TextElement;
 import org.w3c.dom.DOMImplementation;
@@ -11,7 +10,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,21 +18,17 @@ import java.util.stream.Collectors;
  */
 public class DOCmaker {
 
-    public static class ShowGroup {
-        Element g;
-        double h;
-
-        public ShowGroup(Element g, double h) {
-            this.g = g;
-            this.h = h;
-        }
+    public interface GroupGen {
+        ShowGroup makeGroup(Document doc, String svgNS);
     }
 
-    public Collection<ShowGroup> createDeskGroups(Collection<Desk> desks, double xmax, Document doc, String svgNS) {
-        xmax -= 10;
-        Map<Double,List<Desk>> byWidth = desks.stream().collect(Collectors.groupingBy(part -> part.getWidth()));
-        double finalXmax = xmax;
-        return byWidth.entrySet().stream().map(entry -> {
+    public static class ShowGroup {
+        public Collection<BoxedElement> children;
+        public Map<String,String> metadata;
+        public double h;
+        public double xmax;
+
+        public Element toElement(Document doc, String svgNS) {
             double x = 0;
             double y = 0, ynext = 0;
             Element g = doc.createElementNS(svgNS,"g");
@@ -43,26 +37,23 @@ public class DOCmaker {
             table.setSpacing(2);
             table.setX(5);
             table.setY(4);
-            table.addRow(
-                    new TextElement(doc,svgNS,"Desk decor:", "ISOCPEUR", 5 ),
-                    new TextElement(doc,svgNS,"svetly buk", "ISOCPEUR", 5)
-            );
-            table.addRow(
-                    new TextElement(doc,svgNS,"Desk width:", "ISOCPEUR", 5),
-                    new TextElement(doc,svgNS,String.format("%.1f",entry.getKey()), "ISOCPEUR", 5)
-            );
+            for(Map.Entry<String,String> e : metadata.entrySet()) {
+                table.addRow(
+                        new TextElement(doc,svgNS,e.getKey(),"ISOCPEUR", 5 ),
+                        new TextElement(doc,svgNS,e.getValue(), "ISOCPEUR", 5)
+                );
+            }
             g.appendChild(table.getElement());
 
             y = table.getHeight() + 8;
 
-            g.appendChild(new LineElement(doc,svgNS,0,0,finalXmax+10,0).getElement());
-            g.appendChild(new LineElement(doc,svgNS,0,y,finalXmax+10,y).getElement());
+            g.appendChild(new LineElement(doc,svgNS,0,0, xmax +10,0).getElement());
+            g.appendChild(new LineElement(doc,svgNS,0,y, xmax +10,y).getElement());
 
             y = ynext = y + 5;
 
-            for(Desk part : entry.getValue()) {
-                BoxedElement e = part.renderSVG(doc,svgNS);
-                if(x + e.getWidth() > finalXmax) {
+            for(BoxedElement e : children) {
+                if(x + e.getWidth() > xmax) {
                     x = 0;
                     y = ynext + 15;
                 }
@@ -74,15 +65,16 @@ public class DOCmaker {
                 x += e.getWidth() + 15;
             }
             ynext += 15;
-            g.appendChild(new LineElement(doc,svgNS,0,ynext,finalXmax+10,ynext).getElement());
+            g.appendChild(new LineElement(doc,svgNS,0,ynext, xmax +10,ynext).getElement());
             g.appendChild(new LineElement(doc,svgNS,0,0,0,ynext).getElement());
-            g.appendChild(new LineElement(doc,svgNS,finalXmax+10,0,finalXmax+10,ynext).getElement());
-            return new ShowGroup(g,ynext);
-        }).collect(Collectors.toList());
+            g.appendChild(new LineElement(doc,svgNS, xmax +10,0, xmax +10,ynext).getElement());
+            this.h = ynext;
+            return g;
+        }
     }
 
 
-    public Document makeDoc(Collection<Desk> parts) {
+    public Document makeDoc(Collection<GroupGen> groupGens) {
         String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
         DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
         Document doc = domImpl.createDocument(svgNS, "svg", null);
@@ -98,18 +90,19 @@ public class DOCmaker {
         double xoffset = 10, xmax = 210 - xoffset*2;
         double y = 15;
 
-        Collection<ShowGroup> groups = createDeskGroups(
-                parts.stream()
-                        .filter(item -> item instanceof Desk)
-                        .map(item -> (Desk)item).collect(Collectors.toList()),
-                xmax,
-                doc,
-                svgNS
-        );
+        // TODO: padding
+        Collection<ShowGroup> groups = groupGens.stream().map(
+                groupGen -> {
+                    ShowGroup g = groupGen.makeGroup(doc,svgNS);
+                    g.xmax = xmax - 10;
+                    return g;
+                }
+        ).collect(Collectors.toList());
 
         for(ShowGroup g : groups) {
-            g.g.setAttribute("transform", String.format("translate(%f,%f)", xoffset,y));
-            svgRoot.appendChild(g.g);
+            Element e = g.toElement(doc,svgNS);
+            e.setAttribute("transform", String.format("translate(%f,%f)", xoffset,y));
+            svgRoot.appendChild(e);
             y+=g.h + 10;
         }
 
