@@ -15,8 +15,8 @@ public class TextElement extends AbstractBoxedElement {
     private final String font;
     private final double size;
 
-    public TextElement(Document doc, String svgNS, String text, String font, double size) {
-        super(doc, svgNS, "text");
+    public TextElement(String text, String font, double size) {
+        super("text");
         this.text = text;
         this.font = font;
         this.size = size;

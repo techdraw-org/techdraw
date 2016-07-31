@@ -20,8 +20,8 @@ public class TableElement extends AbstractBoxedElement {
     private double spacing = 0.0;
 
 
-    public TableElement(Document doc, String svgNS) {
-        super(doc, svgNS, "g");
+    public TableElement() {
+        super("g");
     }
 
     public void addRow(BoxedElement... elements) {
@@ -61,7 +61,7 @@ public class TableElement extends AbstractBoxedElement {
                 // TODO: set available area, need a lot of refactoring
                 element.setX(x - element.getX());
                 element.setY(y - element.getY());
-                e.appendChild(element.getElement());
+                e.appendChild(element.toSvgElement(doc,svgNS));
                 ynext = max(ynext, y+element.getHeight());
                 x += columnWidths[i] + spacing;
             }

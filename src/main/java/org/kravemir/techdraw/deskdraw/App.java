@@ -5,8 +5,7 @@ import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.kravemir.techdraw.DOCmaker;
 import org.kravemir.techdraw.api.BoxedElement;
-import org.kravemir.techdraw.api.GroupProvider;
-import org.kravemir.techdraw.api.SvgPartGroup;
+import org.kravemir.techdraw.api.PartGroup;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
 
@@ -28,18 +27,18 @@ import java.util.stream.Collectors;
 public class App {
 
 
-    public static Collection<GroupProvider> createDeskGroups(Collection<Desk> desks) {
-        Map<Double,List<Desk>> byWidth = desks.stream().collect(Collectors.groupingBy(part -> part.getWidth()));
-        return byWidth.entrySet().stream().map(entry -> (GroupProvider) (doc, svgNS) -> {
-            Collection<BoxedElement> elements = entry.getValue().stream().map(desk -> desk.renderSVG(doc,svgNS)).collect(Collectors.toList());
+    public static Collection<PartGroup> createDeskGroups(Collection<Desk> desks) {
+        Map<Double,List<Desk>> byWidth = desks.stream().collect(Collectors.groupingBy(Desk::getWidth));
+        return byWidth.entrySet().stream().map(entry ->  {
+            Collection<BoxedElement> elements = entry.getValue().stream().map(Desk::createElement).collect(Collectors.toList());
 
-            SvgPartGroup svgPartGroup = new SvgPartGroup();
-            svgPartGroup.children = elements;
-            svgPartGroup.metadata = new HashMap<>();
-            svgPartGroup.metadata.put("Desk decor:", "svetly buk");
-            svgPartGroup.metadata.put("Desk width:", String.format("%.1f",entry.getKey()));
+            PartGroup partGroup = new PartGroup();
+            partGroup.children = elements;
+            partGroup.metadata = new HashMap<>();
+            partGroup.metadata.put("Desk decor:", "svetly buk");
+            partGroup.metadata.put("Desk width:", String.format("%.1f",entry.getKey()));
 
-            return svgPartGroup;
+            return partGroup;
         }).collect(Collectors.toList());
     }
 
@@ -50,7 +49,7 @@ public class App {
                 new Desk(1000, 200, 12, new boolean[] {true,true,true,true})
         );
 
-        Collection<GroupProvider> groups = createDeskGroups(parts);
+        Collection<PartGroup> groups = createDeskGroups(parts);
 
         Document doc = new DOCmaker().makeDoc(groups);
 

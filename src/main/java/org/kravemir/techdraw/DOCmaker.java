@@ -2,8 +2,7 @@ package org.kravemir.techdraw;
 
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.kravemir.techdraw.api.BoxedElement;
-import org.kravemir.techdraw.api.GroupProvider;
-import org.kravemir.techdraw.api.SvgPartGroup;
+import org.kravemir.techdraw.api.PartGroup;
 import org.kravemir.techdraw.containers.CustomBoxedElement;
 import org.kravemir.techdraw.containers.TableElement;
 import org.kravemir.techdraw.elements.LineElement;
@@ -23,27 +22,27 @@ public class DOCmaker {
 
     private double xmax;
 
-    public BoxedElement toElement(SvgPartGroup group, Document doc, String svgNS) {
+    public BoxedElement toElement(PartGroup group, Document doc, String svgNS) {
         double x = 0;
         double y = 0, ynext = 0;
         Element g = doc.createElementNS(svgNS,"g");
 
-        TableElement table = new TableElement(doc,svgNS);
+        TableElement table = new TableElement();
         table.setSpacing(2);
         table.setX(5);
         table.setY(4);
         for(Map.Entry<String,String> e : group.metadata.entrySet()) {
             table.addRow(
-                    new TextElement(doc,svgNS,e.getKey(),"ISOCPEUR", 5 ),
-                    new TextElement(doc,svgNS,e.getValue(), "ISOCPEUR", 5)
+                    new TextElement(e.getKey(),"ISOCPEUR", 5 ),
+                    new TextElement(e.getValue(), "ISOCPEUR", 5)
             );
         }
-        g.appendChild(table.getElement());
+        g.appendChild(table.toSvgElement(doc, svgNS));
 
         y = table.getHeight() + 8;
 
-        g.appendChild(new LineElement(doc,svgNS,0,0, xmax +10,0).getElement());
-        g.appendChild(new LineElement(doc,svgNS,0,y, xmax +10,y).getElement());
+        g.appendChild(new LineElement(0,0, xmax +10,0).toSvgElement(doc, svgNS));
+        g.appendChild(new LineElement(0,y, xmax +10,y).toSvgElement(doc, svgNS));
 
         y = ynext = y + 5;
 
@@ -55,19 +54,26 @@ public class DOCmaker {
             ynext = Math.max(ynext, y + e.getHeight());
             Element g2 = doc.createElementNS(svgNS,"g");
             g2.setAttribute("transform",String.format("translate(%f,%f)",x+5,y));
-            g2.appendChild(e.getElement());
+            g2.appendChild(e.toSvgElement(doc,svgNS));
             g.appendChild(g2);
             x += e.getWidth() + 15;
         }
         ynext += 15;
-        g.appendChild(new LineElement(doc,svgNS,0,ynext, xmax +10,ynext).getElement());
-        g.appendChild(new LineElement(doc,svgNS,0,0,0,ynext).getElement());
-        g.appendChild(new LineElement(doc,svgNS, xmax +10,0, xmax +10,ynext).getElement());
+        g.appendChild(new LineElement(0,ynext, xmax +10,ynext).toSvgElement(doc, svgNS));
+        g.appendChild(new LineElement(0,0,0,ynext).toSvgElement(doc, svgNS));
+        g.appendChild(new LineElement(xmax +10,0, xmax +10,ynext).toSvgElement(doc, svgNS));
 
-        return new CustomBoxedElement(g,0,ynext);
+        return new CustomBoxedElement(0,ynext) {
+
+            @Override
+            public Element toSvgElement(Document doc, String svgNS) {
+                // TODO: generation
+                return g;
+            }
+        };
     }
 
-    public Document makeDoc(Collection<GroupProvider> groupProviders) {
+    public Document makeDoc(Collection<PartGroup> groups) {
         String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
         DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
         Document doc = domImpl.createDocument(svgNS, "svg", null);
@@ -85,18 +91,13 @@ public class DOCmaker {
 
         this.xmax = xmax - 10;
 
-        Collection<SvgPartGroup> groups = groupProviders.stream().map(
-                groupGen -> {
-                    SvgPartGroup g = groupGen.generatePartGroup(doc,svgNS);
-                    return g;
-                }
-        ).collect(Collectors.toList());
 
-        for(SvgPartGroup g : groups) {
-            BoxedElement e = toElement(g,doc,svgNS);
-            e.getElement().setAttribute("transform", String.format("translate(%f,%f)", xoffset,y));
-            svgRoot.appendChild(e.getElement());
-            y+= e.getHeight();
+        for(PartGroup g : groups) {
+            BoxedElement be = toElement(g,doc,svgNS);
+            Element e = be.toSvgElement(doc,svgNS);
+            e.setAttribute("transform", String.format("translate(%f,%f)", xoffset,y));
+            svgRoot.appendChild(e);
+            y+= be.getHeight();
         }
 
         return doc;

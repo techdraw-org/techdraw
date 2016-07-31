@@ -11,8 +11,6 @@ public abstract class AbstractBoxedElement implements BoxedElement {
 
     private boolean calculationNeeded = true;
 
-    private Document doc;
-    private String svgNS;
     private String tagName;
 
     protected double x = 0;
@@ -20,9 +18,7 @@ public abstract class AbstractBoxedElement implements BoxedElement {
     protected double width = 0;
     protected double height = 0;
 
-    public AbstractBoxedElement(Document doc, String svgNS, String tagName) {
-        this.doc = doc;
-        this.svgNS = svgNS;
+    public AbstractBoxedElement(String tagName) {
         this.tagName = tagName;
     }
 
@@ -41,7 +37,7 @@ public abstract class AbstractBoxedElement implements BoxedElement {
     protected abstract void populateElementAttributes(Element e, Document doc, String svgNS);
 
     @Override
-    public Element getElement() {
+    public Element toSvgElement(Document doc, String svgNS) {
         Element element = doc.createElementNS(svgNS,tagName);
         populateElementAttributes(element, doc, svgNS);
         return element;

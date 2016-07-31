@@ -12,8 +12,8 @@ public class LineElement extends AbstractBoxedElement {
     private final double x2;
     private final double y2;
 
-    public LineElement(Document doc, String svgNS, double x, double y, double x2, double y2) {
-        super(doc, svgNS, "line");
+    public LineElement(double x, double y, double x2, double y2) {
+        super("line");
         setX(x);
         setY(y);
         this.x2 = x2;

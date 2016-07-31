@@ -1,21 +1,20 @@
 package org.kravemir.techdraw.containers;
 
 import org.kravemir.techdraw.api.BoxedElement;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * @author Miroslav Kravec
  */
-public class CustomBoxedElement implements BoxedElement {
+public abstract class CustomBoxedElement implements BoxedElement {
 
-    private Element element;
     private double x;
     private double y;
     private double width;
     private double height;
 
-    public CustomBoxedElement(Element element, double width, double height) {
-        this.element = element;
+    public CustomBoxedElement(double width, double height) {
         this.width = width;
         this.height = height;
     }
@@ -38,14 +37,6 @@ public class CustomBoxedElement implements BoxedElement {
         this.y = y;
     }
 
-    @Override
-    public Element getElement() {
-        return element;
-    }
-
-    public void setElement(Element element) {
-        this.element = element;
-    }
 
     @Override
     public double getWidth() {

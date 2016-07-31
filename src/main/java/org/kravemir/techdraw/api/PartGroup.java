@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Miroslav Kravec
  */
-public class SvgPartGroup {
+public class PartGroup {
     public Collection<BoxedElement> children;
     public Map<String, String> metadata;
 }

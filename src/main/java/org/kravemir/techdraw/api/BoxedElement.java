@@ -1,12 +1,13 @@
 package org.kravemir.techdraw.api;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * @author Miroslav Kravec
  */
 public interface BoxedElement {
-    Element getElement();
+    Element toSvgElement(Document doc, String svgNS);
 
     double getX();
     double getY();

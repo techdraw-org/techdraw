@@ -76,14 +76,14 @@ public class Desk {
         ));
         line.setAttribute("style","fill:none;stroke:black;stroke-width:0.2");
         group.appendChild(line);
-        TextElement text = new TextElement(doc,svgNS,comment,"ISOCPEUR",4);
+        TextElement text = new TextElement(comment,"ISOCPEUR",4);
         text.setX(ws/2 - text.getWidth()/2);
         text.setY(
                 (text.getWidth() < ws - mas*2 - 2) ? (mw/2 + 1) :
                         (text.getWidth() < ws - 2) ? (mw/2 + mas + 1) :
                                 (mw + 1)
         );
-        group.appendChild(text.getElement());
+        group.appendChild(text.toSvgElement(doc,svgNS));
 
         return group;
     }
@@ -98,22 +98,27 @@ public class Desk {
         return line;
     }
 
-    public BoxedElement renderSVG(Document doc, String svgNS) {
+    public BoxedElement createElement() {
         String fillStroke = "fill: none; stroke-width: 0.5; stroke: #000;";
         String noFillStroke = "fill: none; stroke-width: 0.5; stroke: #000; stroke-dasharray: 1.0,0.5";
 
         double aScaled = a * 0.1;
         double bScaled = b * 0.1;
 
-        SVGGElement group = (SVGGElement) doc.createElementNS(svgNS,"g");
-        group.appendChild(createLine(doc,svgNS,0,0,aScaled,0, edges[0] ? fillStroke : noFillStroke ));
-        group.appendChild(createLine(doc,svgNS,aScaled,0,aScaled,bScaled, edges[1] ? fillStroke : noFillStroke ));
-        group.appendChild(createLine(doc,svgNS,0,bScaled,aScaled,bScaled, edges[2] ? fillStroke : noFillStroke ));
-        group.appendChild(createLine(doc,svgNS,0,0,0,bScaled, edges[3] ? fillStroke : noFillStroke ));
-        group.appendChild(createAnnotation(doc,svgNS,0,bScaled,aScaled,bScaled,String.format("%.1f mm",a)));
-        group.appendChild(createAnnotation(doc,svgNS,aScaled,bScaled,aScaled,0,String.format("%.1f mm",b)));
+        return new CustomBoxedElement(aScaled, bScaled) {
 
-        return new CustomBoxedElement(group, aScaled, bScaled);
+            @Override
+            public Element toSvgElement(Document doc, String svgNS) {
+                SVGGElement group = (SVGGElement) doc.createElementNS(svgNS,"g");
+                group.appendChild(createLine(doc,svgNS,0,0,aScaled,0, edges[0] ? fillStroke : noFillStroke ));
+                group.appendChild(createLine(doc,svgNS,aScaled,0,aScaled,bScaled, edges[1] ? fillStroke : noFillStroke ));
+                group.appendChild(createLine(doc,svgNS,0,bScaled,aScaled,bScaled, edges[2] ? fillStroke : noFillStroke ));
+                group.appendChild(createLine(doc,svgNS,0,0,0,bScaled, edges[3] ? fillStroke : noFillStroke ));
+                group.appendChild(createAnnotation(doc,svgNS,0,bScaled,aScaled,bScaled,String.format("%.1f mm",a)));
+                group.appendChild(createAnnotation(doc,svgNS,aScaled,bScaled,aScaled,0,String.format("%.1f mm",b)));
+                return group;
+            }
+        };
     }
 
     public double getA() {
