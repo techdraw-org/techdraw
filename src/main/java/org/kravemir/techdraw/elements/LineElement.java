@@ -13,7 +13,11 @@ public class LineElement extends AbstractBoxedElement {
     private final double y2;
 
     public LineElement(double x, double y, double x2, double y2) {
-        super("line");
+        this(x,y,x2,y2,"stroke: black; stroke-width: 0.2;");
+    }
+
+    public LineElement(double x, double y, double x2, double y2, String style) {
+        super("line",style);
         setX(x);
         setY(y);
         this.x2 = x2;
@@ -31,6 +35,5 @@ public class LineElement extends AbstractBoxedElement {
         e.setAttribute("y1", String.valueOf(y));
         e.setAttribute("x2", String.valueOf(x2));
         e.setAttribute("y2", String.valueOf(y2));
-        e.setAttribute("style", "stroke: black; stroke-width: 0.2;");
     }
 }
