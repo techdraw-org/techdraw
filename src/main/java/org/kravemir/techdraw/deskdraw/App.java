@@ -44,9 +44,28 @@ public class App {
 
     public static void main(String[] args) {
         Collection<Desk> parts = Arrays.asList(
-                new Desk(1000, 200, 18, new boolean[] {true,true,true,true}),
-                new Desk(1000, 200, 18, new boolean[] {true,true,true,true}),
-                new Desk(1000, 200, 12, new boolean[] {true,true,true,true})
+                new Desk(800, 100, 18, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(200, 200, 18, new boolean[] {true,true,true,true}),
+                new Desk(600, 320, 18, new boolean[] {true,true,true,true}),
+                new Desk(800, 200, 24, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(800, 100, 18, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
+                new Desk(200, 200, 18, new boolean[] {true,true,true,true}),
+                new Desk(200, 200, 18, new boolean[] {true,true,true,true}),
+                new Desk(600, 320, 18, new boolean[] {true,true,true,true}),
+                new Desk(800, 200, 24, new boolean[] {true,true,true,true}),
+                new Desk(800, 400, 24, new boolean[] {true,true,true,true}),
+                new Desk(1000, 200, 12, new boolean[] {true,true,true,true}),
+                new Desk(800, 400, 24, new boolean[] {true,true,true,true}),
+                new Desk(1000, 200, 12, new boolean[] {true,true,true,true}),
+                new Desk(320, 210, 12, new boolean[] {true,true,true,true})
         );
 
         Collection<PartGroup> groups = createDeskGroups(parts);
