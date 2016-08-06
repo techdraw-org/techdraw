@@ -10,9 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.xmlgraphics:batik-svg-dom:1.8'
-    compile 'org.apache.xmlgraphics:batik-transcoder:1.8'
-    compile 'org.apache.xmlgraphics:batik-anim:1.8'
+    compile project(':sheets')
 
     compile 'org.apache.xmlgraphics:xmlgraphics-commons:2.1'
     compile 'org.apache.xmlgraphics:batik-swing:1.8'

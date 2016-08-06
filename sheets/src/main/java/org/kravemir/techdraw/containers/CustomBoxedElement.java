@@ -1,8 +1,6 @@
 package org.kravemir.techdraw.containers;
 
 import org.kravemir.techdraw.api.BoxedElement;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * @author Miroslav Kravec
