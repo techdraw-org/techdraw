@@ -1,5 +1,6 @@
 package org.kravemir.techdraw;
 
+import java.util.HashSet;
 import org.kravemir.techdraw.api.BoxedElement;
 import org.kravemir.techdraw.api.PartGroup;
 import org.kravemir.techdraw.containers.GroupElement;
@@ -8,6 +9,7 @@ import org.kravemir.techdraw.elements.LineElement;
 import org.kravemir.techdraw.elements.TextElement;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Miroslav Kravec
@@ -20,7 +22,9 @@ public class SimpleGroupDrawer implements GroupDrawer {
         this.group = group;
     }
 
-    private GroupElement createContentGroup(PartGroup group, double xmax) {
+    private DrawResult createContentGroup(PartGroup group, double xmax, double maxHeight) {
+        Set<BoxedElement> remainingElements = new HashSet<>(group.children);
+
         double innerOffset = 5;
         double x = 0;
         double y = innerOffset, ynext = 0;
@@ -31,16 +35,21 @@ public class SimpleGroupDrawer implements GroupDrawer {
                 x = 0;
                 y = ynext + 15;
             }
+            if(y + e.getHeight() > maxHeight)
+                break;
+
             ynext = Math.max(ynext, y + e.getHeight());
-            GroupElement g2 = new GroupElement();
-            g2.setMatrixTransform(1,0,0,1,x+5,y);
-            g2.addChild(e);
-            contentGroup.addChild(g2);
+            contentGroup.addChild(GroupElement.translate(e, x + 5, y));
             x += e.getWidth() + 15;
+            remainingElements.remove(e);
         }
         contentGroup.setHeight(ynext + innerOffset + 10);
 
-        return contentGroup;
+        GroupDrawer nextDrawer = null;
+        if(remainingElements.size() > 0)
+            nextDrawer = new SimpleGroupDrawer(new PartGroup(remainingElements, group.metadata));
+
+        return new DrawResult(contentGroup, nextDrawer);
     }
 
     @Override
@@ -66,7 +75,8 @@ public class SimpleGroupDrawer implements GroupDrawer {
         g.addChild(new LineElement(0,0, xmax +10,0));
         g.addChild(new LineElement(0,y, xmax +10,y));
 
-        GroupElement groupElement = createContentGroup(group, xmax);
+        DrawResult contentResult = createContentGroup(group, xmax, maxHeight - y);
+        GroupElement groupElement = (GroupElement) contentResult.getBoxedElement();
         groupElement.setMatrixTransform(1,0,0,1,0, y);
 
         y = y + groupElement.getHeight();
@@ -79,6 +89,6 @@ public class SimpleGroupDrawer implements GroupDrawer {
 
         g.setHeight(y);
 
-        return new DrawResult(g, null);
+        return new DrawResult(g, contentResult.getNextDrawer());
     }
 }

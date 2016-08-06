@@ -50,4 +50,11 @@ public class GroupElement extends AbstractBoxedElement {
             throw new IllegalStateException();
         this.transformMatrix = values;
     }
+
+    public static GroupElement translate(BoxedElement child, double x, double y) {
+        GroupElement g = new GroupElement();
+        g.setMatrixTransform(1,0,0,1,x,y);
+        g.addChild(child);
+        return g;
+    }
 }
