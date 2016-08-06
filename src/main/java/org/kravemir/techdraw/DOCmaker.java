@@ -3,6 +3,7 @@ package org.kravemir.techdraw;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.kravemir.techdraw.api.BoxedElement;
 import org.kravemir.techdraw.api.PartGroup;
+import org.kravemir.techdraw.containers.GroupElement;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -10,7 +11,7 @@ import org.w3c.dom.Element;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.kravemir.techdraw.containers.GroupElement;
+import java.util.Locale;
 
 /**
  * @author Miroslav Kravec
@@ -29,6 +30,8 @@ public class DOCmaker {
         double height = 290 - 15;
         double y = 15;
 
+        // TODO: find better fix
+        Locale.setDefault(Locale.ENGLISH);
         for (PartGroup g : groups) {
             GroupDrawer current = new SimpleGroupDrawer(g);
             do {
@@ -54,7 +57,7 @@ public class DOCmaker {
                 svgRoot.appendChild(GroupElement.translate(be, xoffset, y).toSvgElement(doc, svgNS));
                 y += be.getHeight() + 5;
 
-                if (y >= 290 - 15.5) {
+                if (y >= 290 - 35.5 || dr.getNextDrawer() != null ) {
                     doc = null;
                 }
                 current = dr.getNextDrawer();

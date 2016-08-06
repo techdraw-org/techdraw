@@ -1,6 +1,5 @@
 package org.kravemir.techdraw;
 
-import java.util.HashSet;
 import org.kravemir.techdraw.api.BoxedElement;
 import org.kravemir.techdraw.api.PartGroup;
 import org.kravemir.techdraw.containers.GroupElement;
@@ -8,8 +7,10 @@ import org.kravemir.techdraw.containers.TableElement;
 import org.kravemir.techdraw.elements.LineElement;
 import org.kravemir.techdraw.elements.TextElement;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Miroslav Kravec
@@ -23,14 +24,19 @@ public class SimpleGroupDrawer implements GroupDrawer {
     }
 
     private DrawResult createContentGroup(PartGroup group, double xmax, double maxHeight) {
-        Set<BoxedElement> remainingElements = new HashSet<>(group.children);
+        List<BoxedElement> remainingElements = group.children.stream()
+                .sorted((a,b) -> Double.compare(b.getHeight(),a.getHeight()))
+                .collect(Collectors.toList());
 
         double innerOffset = 5;
         double x = 0;
         double y = innerOffset, ynext = 0;
 
         GroupElement contentGroup = new GroupElement();
-        for(BoxedElement e : group.children) {
+        Iterator<BoxedElement> it = remainingElements.iterator();
+        while(it.hasNext()) {
+            BoxedElement e = it.next();
+
             if(x + e.getWidth() > xmax) {
                 x = 0;
                 y = ynext + 15;
@@ -41,12 +47,12 @@ public class SimpleGroupDrawer implements GroupDrawer {
             ynext = Math.max(ynext, y + e.getHeight());
             contentGroup.addChild(GroupElement.translate(e, x + 5, y));
             x += e.getWidth() + 15;
-            remainingElements.remove(e);
+            it.remove();
         }
         contentGroup.setHeight(ynext + innerOffset + 10);
 
         GroupDrawer nextDrawer = null;
-        if(remainingElements.size() > 0)
+        if(!remainingElements.isEmpty())
             nextDrawer = new SimpleGroupDrawer(new PartGroup(remainingElements, group.metadata));
 
         return new DrawResult(contentGroup, nextDrawer);

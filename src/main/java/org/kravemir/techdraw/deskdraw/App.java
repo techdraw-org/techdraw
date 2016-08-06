@@ -51,6 +51,7 @@ public class App {
             new Desk(1000, 200, 12, new boolean[] {true,true,true,true}),
             new Desk(800, 400, 24, new boolean[] {true,true,true,true}),
             new Desk(1000, 200, 12, new boolean[] {true,true,true,true}),
+            new Desk(320, 210, 12, new boolean[] {true,true,true,true}),
             new Desk(320, 210, 12, new boolean[] {true,true,true,true})
     ));
 
