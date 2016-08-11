@@ -1,6 +1,6 @@
-package org.kravemir.techdraw;
+package org.techdraw.sheets;
 
-import org.kravemir.techdraw.api.BoxedElement;
+import org.techdraw.sheets.api.BoxedElement;
 
 /**
  * @author Miroslav Kravec

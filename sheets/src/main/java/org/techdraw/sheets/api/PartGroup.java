@@ -1,4 +1,4 @@
-package org.kravemir.techdraw.api;
+package org.techdraw.sheets.api;
 
 import java.util.Collection;
 import java.util.Map;

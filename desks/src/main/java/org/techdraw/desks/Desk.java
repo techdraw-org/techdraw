@@ -1,10 +1,10 @@
-package org.kravemir.techdraw.deskdraw;
+package org.techdraw.desks;
 
-import org.kravemir.techdraw.api.BoxedElement;
-import org.kravemir.techdraw.containers.CustomBoxedElement;
-import org.kravemir.techdraw.containers.GroupElement;
-import org.kravemir.techdraw.elements.LineElement;
-import org.kravemir.techdraw.elements.TextElement;
+import org.techdraw.sheets.api.BoxedElement;
+import org.techdraw.sheets.containers.CustomBoxedElement;
+import org.techdraw.sheets.containers.GroupElement;
+import org.techdraw.sheets.elements.LineElement;
+import org.techdraw.sheets.elements.TextElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

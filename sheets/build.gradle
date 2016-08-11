@@ -1,4 +1,4 @@
-group 'org.kravemir.techdraw'
+group 'org.techdraw.sheets'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'

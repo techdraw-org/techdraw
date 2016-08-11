@@ -1,9 +1,9 @@
-package org.kravemir.techdraw;
+package org.techdraw.sheets;
 
 import org.apache.batik.anim.dom.SVGDOMImplementation;
-import org.kravemir.techdraw.api.BoxedElement;
-import org.kravemir.techdraw.api.PartGroup;
-import org.kravemir.techdraw.containers.GroupElement;
+import org.techdraw.sheets.api.BoxedElement;
+import org.techdraw.sheets.api.PartGroup;
+import org.techdraw.sheets.containers.GroupElement;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

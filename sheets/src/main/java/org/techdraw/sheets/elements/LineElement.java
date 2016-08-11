@@ -1,6 +1,6 @@
-package org.kravemir.techdraw.elements;
+package org.techdraw.sheets.elements;
 
-import org.kravemir.techdraw.containers.AbstractBoxedElement;
+import org.techdraw.sheets.containers.AbstractBoxedElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -1,4 +1,4 @@
-package org.kravemir.techdraw.api;
+package org.techdraw.sheets.api;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

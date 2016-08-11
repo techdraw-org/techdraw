@@ -1,11 +1,11 @@
-package org.kravemir.techdraw;
+package org.techdraw.sheets;
 
-import org.kravemir.techdraw.api.BoxedElement;
-import org.kravemir.techdraw.api.PartGroup;
-import org.kravemir.techdraw.containers.GroupElement;
-import org.kravemir.techdraw.containers.TableElement;
-import org.kravemir.techdraw.elements.LineElement;
-import org.kravemir.techdraw.elements.TextElement;
+import org.techdraw.sheets.api.BoxedElement;
+import org.techdraw.sheets.api.PartGroup;
+import org.techdraw.sheets.containers.GroupElement;
+import org.techdraw.sheets.containers.TableElement;
+import org.techdraw.sheets.elements.LineElement;
+import org.techdraw.sheets.elements.TextElement;
 
 import java.util.Iterator;
 import java.util.List;

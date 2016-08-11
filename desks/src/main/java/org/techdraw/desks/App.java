@@ -1,11 +1,11 @@
-package org.kravemir.techdraw.deskdraw;
+package org.techdraw.desks;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.kravemir.techdraw.DOCmaker;
-import org.kravemir.techdraw.api.BoxedElement;
-import org.kravemir.techdraw.api.PartGroup;
+import org.techdraw.sheets.DOCmaker;
+import org.techdraw.sheets.api.BoxedElement;
+import org.techdraw.sheets.api.PartGroup;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
 
