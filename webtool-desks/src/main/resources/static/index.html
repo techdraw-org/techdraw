@@ -11,6 +11,7 @@
         <div ng-repeat="desk in vm.desks">
             <input type="text" ng-model="desk.a" />
             <input type="text" ng-model="desk.b" />
+            <input type="text" ng-model="desk.width" />
         </div>
     </form>
     <pre>{{vm.desks | json}}</pre>

@@ -4,7 +4,6 @@ import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.techdraw.sheets.DOCmaker;
-import org.techdraw.sheets.api.BoxedElement;
 import org.techdraw.sheets.api.PartGroup;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
@@ -22,8 +21,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Miroslav Kravec
@@ -55,23 +52,10 @@ public class App {
             new Desk(320, 210, 12, new boolean[] {true,true,true,true})
     ));
 
-    public Collection<PartGroup> createDeskGroups(Collection<Desk> desks) {
-        Map<Double,List<Desk>> byWidth = desks.stream().collect(Collectors.groupingBy(Desk::getWidth));
-        return byWidth.entrySet().stream().map(entry ->  {
-            Collection<BoxedElement> elements = entry.getValue().stream().map(Desk::createElement).collect(Collectors.toList());
-
-            PartGroup partGroup = new PartGroup();
-            partGroup.children = elements;
-            partGroup.metadata = new HashMap<>();
-            partGroup.metadata.put("Desk decor:", "svetly buk");
-            partGroup.metadata.put("Desk width:", String.format("%.1f",entry.getKey()));
-
-            return partGroup;
-        }).collect(Collectors.toList());
-    }
+    private final DesksPartGroupGenerator desksPartGroupGenerator = new DesksPartGroupGenerator();
 
     private SVGDocument[] prepareDocuments() {
-        Collection<PartGroup> groups = createDeskGroups(parts);
+        Collection<PartGroup> groups = desksPartGroupGenerator.createDeskGroups(parts);
         Document[] documents = new DOCmaker().makeDoc(groups);
 
         return Arrays.stream(documents)

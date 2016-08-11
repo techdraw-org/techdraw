@@ -20,6 +20,10 @@ public class Desk {
     double width;
     boolean[] edges;
 
+    public Desk() {
+        this.edges = new boolean[]{false,false,false,false};
+    }
+
     public Desk(double a, double b, double width, boolean[] edges) {
         this.a = a;
         this.b = b;
