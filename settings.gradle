@@ -1,4 +1,4 @@
 rootProject.name = 'TechDraw'
 
-include ':sheets', ':desks'
+include ':sheets', ':desks', ':webtool-desks'
 

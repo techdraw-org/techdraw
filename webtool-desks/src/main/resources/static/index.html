@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <title>webapp: desks</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body ng-app="desksApp">
+<div ng-controller="DesksController as vm">
+    <form>
+        <div ng-repeat="desk in vm.desks">
+            <input type="text" ng-model="desk.a" />
+            <input type="text" ng-model="desk.b" />
+        </div>
+    </form>
+    <pre>{{vm.desks | json}}</pre>
+</div>
+</body>
+</html>
