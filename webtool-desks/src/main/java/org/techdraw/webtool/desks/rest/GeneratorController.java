@@ -1,5 +1,8 @@
 package org.techdraw.webtool.desks.rest;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +31,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class GeneratorController {
 
     @RequestMapping(value = "/svg", method = POST /* TODO:, produces = "image/svg+xml"*/)
-    public @ResponseBody String generateSVG(@RequestBody ArrayList<Desk> request) {
+    public @ResponseBody ResponseEntity<String> generateSVG(@RequestBody ArrayList<Desk> request) {
         Collection<PartGroup> groups = new DesksPartGroupGenerator().createDeskGroups(request);
         Document[] documents = new DOCmaker().makeDoc(groups);
 
@@ -39,7 +42,12 @@ public class GeneratorController {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();
             transformer.transform(domSource, result);
-            return writer.toString();
+            String image = writer.toString();
+
+            return ResponseEntity.ok()
+                    .contentLength(image.length())
+                    .contentType(MediaType.parseMediaType("image/svg+xml"))
+                    .body(image);
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
