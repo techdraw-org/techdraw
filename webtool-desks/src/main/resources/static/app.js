@@ -16,4 +16,10 @@ angular
                     $window.saveAs(blob, "sheet.svg");
                 });
         };
+        this.addDesk = function() {
+            this.desks.push({});
+        };
+        this.removeDesk = function(index) {
+            this.desks.splice(index,1);
+        };
     });

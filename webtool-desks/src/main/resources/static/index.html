@@ -12,19 +12,22 @@
         <h3>Desks</h3>
         <table>
             <tr ng-repeat="desk in vm.desks">
-                <td><input type="number" ng-model="desk.a" /></td>
-                <td><input type="number" ng-model="desk.b" /></td>
-                <td><input type="number" ng-model="desk.width" /></td>
+                <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
+                <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
+                <td><input type="number" placeholder="width" min="0" max="1000" step="1" ng-model="desk.width" required /></td>
                 <td>
                     <input type="checkbox" ng-model="desk.edges[0]" />
                     <input type="checkbox" ng-model="desk.edges[1]" />
                     <input type="checkbox" ng-model="desk.edges[2]" />
                     <input type="checkbox" ng-model="desk.edges[3]" />
                 </td>
+                <td>
+                    <button type="button" ng-click="vm.removeDesk($index)">X</button>
+                </td>
             </tr>
         </table>
         <div>
-            <input type="submit" value="Generate SVG"/>
+            <button type="button" ng-click="vm.addDesk()">Add desk</button> <input type="submit" value="Generate SVG"/>
         </div>
     </form>
     <pre>{{vm.desks | json}}</pre>
