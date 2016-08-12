@@ -5,32 +5,50 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="FileSaver.js"></script><!-- TODO: more sophisticated way -->
     <script src="app.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
 </head>
 <body ng-app="desksApp">
 <div ng-controller="DesksController as vm">
-    <form  ng-submit="vm.submit()">
-        <h3>Desks</h3>
-        <table>
-            <tr ng-repeat="desk in vm.desks">
-                <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
-                <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
-                <td><input type="number" placeholder="width" min="0" max="1000" step="1" ng-model="desk.width" required /></td>
-                <td>
-                    <input type="checkbox" ng-model="desk.edges[0]" />
-                    <input type="checkbox" ng-model="desk.edges[1]" />
-                    <input type="checkbox" ng-model="desk.edges[2]" />
-                    <input type="checkbox" ng-model="desk.edges[3]" />
-                </td>
-                <td>
-                    <button type="button" ng-click="vm.removeDesk($index)">X</button>
-                </td>
-            </tr>
-        </table>
-        <div>
-            <button type="button" ng-click="vm.addDesk()">Add desk</button> <input type="submit" value="Generate SVG"/>
+    <h3>Desks</h3>
+    <div class="styled-g">
+        <div class="styled-gc-1-2">
+            <form class="styled-form" ng-submit="vm.submit()">
+                <table class="styled-table" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>a</th>
+                            <th>b</th>
+                            <th>width</th>
+                            <th>edges</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="desk in vm.desks">
+                            <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
+                            <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
+                            <td><input type="number" placeholder="width" min="0" max="1000" step="1" ng-model="desk.width" required /></td>
+                            <td>
+                                <input type="checkbox" ng-model="desk.edges[0]" />
+                                <input type="checkbox" ng-model="desk.edges[1]" />
+                                <input type="checkbox" ng-model="desk.edges[2]" />
+                                <input type="checkbox" ng-model="desk.edges[3]" />
+                            </td>
+                            <td>
+                                <button type="button" ng-click="vm.removeDesk($index)">X</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="buttons">
+                    <button type="button" ng-click="vm.addDesk()">Add desk</button> <input class="primary" type="submit" value="Generate SVG"/>
+                </div>
+            </form>
         </div>
-    </form>
-    <pre>{{vm.desks | json}}</pre>
+        <div style="font-size: 0.67em" class="styled-gc-1-2">
+            <pre>{{vm.desks | json}}</pre>
+        </div>
+    </div>
 </div>
 </body>
 </html>
