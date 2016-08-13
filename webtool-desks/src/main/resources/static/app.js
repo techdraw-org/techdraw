@@ -10,11 +10,18 @@ angular
             { a: 300, b:200, width: 12, edges: [true,false,true,false] }
         ];
         this.formattedPreview = false;
-        this.submit = function() {
-            $http.post('/svg',this.desks)
+        this.generateSVG = function() {
+            $http.post('/svg',this.desks, {responseType:'arraybuffer'})
                 .success(function (data) {
                     var blob = new Blob([data], {type: "image/xml+svg"});
                     $window.saveAs(blob, "sheet.svg");
+                });
+        };
+        this.generatePDF = function() {
+            $http.post('/pdf',this.desks, {responseType:'arraybuffer'})
+                .success(function (data) {
+                    var blob = new Blob([data], {type: "application/pdf"});
+                    $window.saveAs(blob, "sheets.pdf");
                 });
         };
         this.addDesk = function() {

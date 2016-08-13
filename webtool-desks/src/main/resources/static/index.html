@@ -12,7 +12,7 @@
     <h3>Desks</h3>
     <div class="styled-g">
         <div class="styled-gc-1-2">
-            <form class="styled-form" ng-submit="vm.submit()">
+            <form class="styled-form" ng-submit="false">
                 <table class="styled-table" style="width: 100%">
                     <thead>
                         <tr>
@@ -41,7 +41,9 @@
                     </tbody>
                 </table>
                 <div class="buttons">
-                    <button type="button" ng-click="vm.addDesk()">Add desk</button> <input class="primary" type="submit" value="Generate SVG"/>
+                    <button type="button" ng-click="vm.addDesk()">Add desk</button>
+                    <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
+                    <button class="primary" type="button" ng-click="vm.generatePDF()">Generate PDF</button>
                 </div>
             </form>
         </div>
