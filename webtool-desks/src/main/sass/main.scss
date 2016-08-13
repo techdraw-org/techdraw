@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 
 .styled-form {
 
@@ -80,12 +84,33 @@
 }
 
 .styled-gc-1-2 {
-  flex: 0.499 1;
+  flex: 0.5 0 0px;
+  width: 0px;
 }
 
-pre {
+.content-box {
   border: solid 1px #cccccc;
   background: #f3f3f3;
   padding: 1em;
-  margin: 0;
+  position: relative;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+.overlay {
+  position: absolute;
+  background: rgba(100,100,100,0.3);
+  padding: 4pt;
+  border-radius: 4pt;
+
+
+  &.top {
+    top: 12pt;
+  }
+
+  &.right {
+    right: 12pt;
+  }
 }

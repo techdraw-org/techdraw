@@ -46,7 +46,14 @@
             </form>
         </div>
         <div style="font-size: 0.67em" class="styled-gc-1-2">
-            <pre>{{vm.desks | json}}</pre>
+            <div class=" content-box">
+                <div class="overlay top right">
+                    <input type="checkbox" ng-model="vm.formattedPreview" id="formattedPreview"/>
+                    <label for="formattedPreview">Formatted preview</label>
+                </div>
+                <pre ng-if="!vm.formattedPreview">{{vm.desks}}</pre>
+                <pre ng-if="vm.formattedPreview">{{vm.desks | json}}</pre>
+            </div>
         </div>
     </div>
 </div>

@@ -9,6 +9,7 @@ angular
             { a: 300, b:200, width: 12, edges: [true,false,true,false] },
             { a: 300, b:200, width: 12, edges: [true,false,true,false] }
         ];
+        this.formattedPreview = false;
         this.submit = function() {
             $http.post('/svg',this.desks)
                 .success(function (data) {
