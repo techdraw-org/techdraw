@@ -4,6 +4,7 @@ import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.techdraw.sheets.api.BoxedElement;
 import org.techdraw.sheets.api.PartGroup;
 import org.techdraw.sheets.containers.GroupElement;
+import org.techdraw.sheets.elements.TextElement;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,6 +18,13 @@ import java.util.Locale;
  * @author Miroslav Kravec
  */
 public class DOCmaker {
+
+    protected void applyPageDecoration(Element svgRoot, Document doc, String svgNS) {
+        TextElement footer = new TextElement("http://techdraw.org/", "ISOCPEUR", 5);
+        footer.setX(10);
+        footer.setY(290 - 2.5);
+        svgRoot.appendChild(footer.toSvgElement(doc,svgNS));
+    }
 
     public Document[] makeDoc(Collection<PartGroup> groups) {
         String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
@@ -63,6 +71,8 @@ public class DOCmaker {
                 current = dr.getNextDrawer();
             } while ( current != null );
         }
+
+        documents.stream().forEach(d -> applyPageDecoration(d.getDocumentElement(), d, svgNS));
 
         return documents.toArray(new Document[documents.size()]);
     }
