@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.techdraw.desks.Desk;
 import org.techdraw.desks.DesksPartGroupGenerator;
-import org.techdraw.sheets.DOCmaker;
+import org.techdraw.sheets.DocRenderer;
 import org.techdraw.sheets.api.PartGroup;
 import org.w3c.dom.Document;
 
@@ -36,7 +36,7 @@ public class GeneratorController {
 
     private String renderSVG(ArrayList<Desk> desks) {
         Collection<PartGroup> groups = new DesksPartGroupGenerator().createDeskGroups(desks);
-        Document[] documents = new DOCmaker().makeDoc(groups);
+        Document[] documents = new DocRenderer().makeDoc(groups);
 
         try {
             DOMSource domSource = new DOMSource(documents[0]);

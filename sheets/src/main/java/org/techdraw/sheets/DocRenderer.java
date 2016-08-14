@@ -4,7 +4,6 @@ import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.techdraw.sheets.api.BoxedElement;
 import org.techdraw.sheets.api.PartGroup;
 import org.techdraw.sheets.containers.GroupElement;
-import org.techdraw.sheets.elements.TextElement;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,14 +16,8 @@ import java.util.Locale;
 /**
  * @author Miroslav Kravec
  */
-public class DOCmaker {
-
-    protected void applyPageDecoration(Element svgRoot, Document doc, String svgNS) {
-        TextElement footer = new TextElement("http://techdraw.org/", "ISOCPEUR", 5);
-        footer.setX(10);
-        footer.setY(290 - 2.5);
-        svgRoot.appendChild(footer.toSvgElement(doc,svgNS));
-    }
+public class DocRenderer {
+    private PageDecorator pageDecorator = null;
 
     public Document[] makeDoc(Collection<PartGroup> groups) {
         String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
@@ -35,8 +28,10 @@ public class DOCmaker {
         Document doc = null;
 
         double xoffset = 10, xmax = 210 - xoffset * 2;
-        double height = 290 - 15;
-        double y = 15;
+        double ystart = 5 + (pageDecorator != null ? pageDecorator.headerHeight() : 0), y;
+        double height = 290 - 5 - (pageDecorator != null ? pageDecorator.footerHeight() : 0);
+
+        y = ystart;
 
         // TODO: find better fix
         Locale.setDefault(Locale.ENGLISH);
@@ -55,7 +50,7 @@ public class DOCmaker {
                     svgRoot.setAttributeNS(null, "height", "29.7cm");
                     svgRoot.setAttributeNS(null, "viewBox", "0 0 210 297");
 
-                    y = 15;
+                    y = ystart;
                 } else {
                     svgRoot = doc.getDocumentElement();
                 }
@@ -72,8 +67,17 @@ public class DOCmaker {
             } while ( current != null );
         }
 
-        documents.stream().forEach(d -> applyPageDecoration(d.getDocumentElement(), d, svgNS));
+        if(pageDecorator != null)
+            documents.stream().forEach(d -> pageDecorator.applyPageDecoration(d.getDocumentElement(), d, svgNS));
 
         return documents.toArray(new Document[documents.size()]);
+    }
+
+    public PageDecorator getPageDecorator() {
+        return pageDecorator;
+    }
+
+    public void setPageDecorator(PageDecorator pageDecorator) {
+        this.pageDecorator = pageDecorator;
     }
 }
