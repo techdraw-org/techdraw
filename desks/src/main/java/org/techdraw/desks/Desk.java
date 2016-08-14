@@ -8,6 +8,8 @@ import org.techdraw.sheets.elements.TextElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Random;
+
 import static java.lang.Math.sqrt;
 
 /**
@@ -113,6 +115,51 @@ public class Desk {
         );
     }
 
+    private BoxedElement[] createFilling(double ls, double hs) {
+        StringBuilder[] paths = new StringBuilder[8];
+        for(int i = 0; i < 8; i++)
+            paths[i] = new StringBuilder();
+
+        Random rand = new Random();
+
+        for(double ly = 1; ly < hs; ly += 0.5 + 1.0 * rand.nextDouble()) {
+            double lx = 0;
+            while (true) {
+                lx += rand.nextDouble() * 5;
+                if (lx + 0.1 > ls)
+                    break;
+
+                double w = 1 + rand.nextDouble() * rand.nextDouble() * 7;
+                w = Math.min(ls - lx, w);
+                int p = rand.nextInt(8);
+
+                paths[p].append(String.format("M%f,%fh%f", lx, ly, w));
+                lx += w + 1;
+            }
+        }
+        BoxedElement[] boxedElements = new BoxedElement[8];
+        for(int i = 0; i < 8; i++) {
+            final String str = paths[i].toString();
+            final int finalI = i;
+
+            boxedElements[i] = new CustomBoxedElement(ls, hs) {
+                @Override
+                public Element toSvgElement(Document doc, String svgNS) {
+                    char c = (char) ('c'-finalI);
+                    if(c < 'a')
+                        c = (char) ((int)c - 'a' + '0' + 10);
+                    Element path = doc.createElementNS(svgNS, "path");
+                    path.setAttribute("d",str);
+                    path.setAttribute("style", String.format(
+                            "fill: none; stroke-width: %f; stroke: #%c%c%c;", finalI * 0.05 / 8 + 0.05, c,c,c
+                    ));
+                    return path;
+                }
+            };
+        }
+        return boxedElements;
+    }
+
     public BoxedElement createElement() {
         String fillStroke = "fill: none; stroke-width: 0.5; stroke: #000;";
         String noFillStroke = "fill: none; stroke-width: 0.5; stroke: #000; stroke-dasharray: 1.0,0.5";
@@ -127,6 +174,7 @@ public class Desk {
         group.addChild(createLine(0,0,0,bScaled, edges[3] ? fillStroke : noFillStroke ));
         group.addChild(createAnnotation(0,bScaled,aScaled,bScaled,String.format("%.1f mm",a)));
         group.addChild(createAnnotation(aScaled,bScaled,aScaled,0,String.format("%.1f mm",b)));
+        group.addChild(createFilling(aScaled,bScaled));
         group.setWidth(aScaled); // TODO: real sizes should be computed by GroupElement
         group.setHeight(bScaled);
 

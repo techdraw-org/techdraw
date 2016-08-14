@@ -5,15 +5,15 @@ import org.techdraw.sheets.api.BoxedElement;
 /**
  * @author Miroslav Kravec
  */
-public interface GroupDrawer {
+public interface DocPartDrawer {
 
     DrawResult draw(double maxWidth, double maxHeight);
 
     class DrawResult {
         private BoxedElement boxedElement;
-        private GroupDrawer nextDrawer;
+        private DocPartDrawer nextDrawer;
 
-        public DrawResult(BoxedElement boxedElement, GroupDrawer nextDrawer) {
+        public DrawResult(BoxedElement boxedElement, DocPartDrawer nextDrawer) {
             this.boxedElement = boxedElement;
             this.nextDrawer = nextDrawer;
         }
@@ -22,7 +22,7 @@ public interface GroupDrawer {
             return boxedElement;
         }
 
-        public GroupDrawer getNextDrawer() {
+        public DocPartDrawer getNextDrawer() {
             return nextDrawer;
         }
     }

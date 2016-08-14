@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.svg.SVGGElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,6 +40,10 @@ public class GroupElement extends AbstractBoxedElement {
 
     public void addChild(BoxedElement element) {
         children.add(element);
+    }
+
+    public void addChild(BoxedElement[] elements) {
+        children.addAll(Arrays.asList(elements));
     }
 
     public void clearChildren() {

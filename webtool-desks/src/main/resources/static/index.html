@@ -11,7 +11,7 @@
 <div ng-controller="DesksController as vm">
     <h3>Desks</h3>
     <div class="styled-g">
-        <div class="styled-gc-1-2">
+        <div class="styled-gc-2-3">
             <form class="styled-form" ng-submit="false">
                 <table class="styled-table" style="width: 100%">
                     <thead>
@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="desk in vm.desks">
+                        <tr ng-repeat="desk in vm.model.desks">
                             <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
                             <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
                             <td><input type="number" placeholder="width" min="0" max="1000" step="1" ng-model="desk.width" required /></td>
@@ -45,16 +45,30 @@
                     <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
                     <button class="primary" type="button" ng-click="vm.generatePDF()">Generate PDF</button>
                 </div>
+                <div class="extra-options">
+                    <span>
+                        <label for="title">Title</label>
+                        <input id="title" ng-model="vm.model.documentTitle" />
+                    </span>
+                    <span>
+                        <label for="header">Header</label>
+                        <input id="header" ng-model="vm.model.pageHeader" />
+                    </span>
+                    <span>
+                        <label for="footer">Footer</label>
+                        <input id="footer" ng-model="vm.model.pageFooter" />
+                    </span>
+                </div>
             </form>
         </div>
-        <div style="font-size: 0.67em" class="styled-gc-1-2">
+        <div style="font-size: 0.67em" class="styled-gc-1-3">
             <div class=" content-box">
                 <div class="overlay top right">
                     <input type="checkbox" ng-model="vm.formattedPreview" id="formattedPreview"/>
                     <label for="formattedPreview">Formatted preview</label>
                 </div>
-                <pre ng-if="!vm.formattedPreview">{{vm.desks}}</pre>
-                <pre ng-if="vm.formattedPreview">{{vm.desks | json}}</pre>
+                <pre ng-if="!vm.formattedPreview">{{vm.model}}</pre>
+                <pre ng-if="vm.formattedPreview">{{vm.model | json}}</pre>
             </div>
         </div>
     </div>

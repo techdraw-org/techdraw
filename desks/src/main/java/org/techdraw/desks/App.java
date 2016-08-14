@@ -3,7 +3,7 @@ package org.techdraw.desks;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.techdraw.sheets.DOCmaker;
+import org.techdraw.sheets.*;
 import org.techdraw.sheets.api.PartGroup;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author Miroslav Kravec
@@ -55,8 +56,19 @@ public class App {
     private final DesksPartGroupGenerator desksPartGroupGenerator = new DesksPartGroupGenerator();
 
     private SVGDocument[] prepareDocuments() {
+        SimplePageDecorator pageDecorator = new SimplePageDecorator();
+        pageDecorator.setHeaderText("TechDraw:desks, demo application");
+        pageDecorator.setFooterText("Generated using TechDraw (http://techdraw.org/)");
+
+        DocRenderer renderer = new DocRenderer();
+        renderer.setPageDecorator(pageDecorator);
+
         Collection<PartGroup> groups = desksPartGroupGenerator.createDeskGroups(parts);
-        Document[] documents = new DOCmaker().makeDoc(groups);
+        List<DocPartDrawer> docPartDrawers = new ArrayList<>();
+        docPartDrawers.add(new TitleDrawer("TechDraw:desks"));
+        groups.stream().forEach(g -> docPartDrawers.add(new SimpleGroupDrawer(g)));
+
+        Document[] documents = renderer.makeDoc(docPartDrawers);
 
         return Arrays.stream(documents)
                 .map(document -> {

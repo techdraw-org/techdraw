@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * @author Miroslav Kravec
  */
-public class SimpleGroupDrawer implements GroupDrawer {
+public class SimpleGroupDrawer implements DocPartDrawer {
 
     private PartGroup group;
 
@@ -51,7 +51,7 @@ public class SimpleGroupDrawer implements GroupDrawer {
         }
         contentGroup.setHeight(ynext + innerOffset + 10);
 
-        GroupDrawer nextDrawer = null;
+        DocPartDrawer nextDrawer = null;
         if(!remainingElements.isEmpty())
             nextDrawer = new SimpleGroupDrawer(new PartGroup(remainingElements, group.metadata));
 
