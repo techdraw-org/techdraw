@@ -45,3 +45,16 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+springBoot {
+    executable = true
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'org.techdraw.webtool.desks.Application'
+        )
+    }
+}
