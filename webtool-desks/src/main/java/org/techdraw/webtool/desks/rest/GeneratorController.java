@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.techdraw.desks.Desk;
 import org.techdraw.desks.DesksPartGroupGenerator;
 import org.techdraw.sheets.DocRenderer;
+import org.techdraw.sheets.SimplePageDecorator;
 import org.techdraw.sheets.api.PartGroup;
+import org.techdraw.webtool.desks.models.DesksModel;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.Transformer;
@@ -23,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -34,9 +34,23 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 public class GeneratorController {
 
-    private String renderSVG(ArrayList<Desk> desks) {
-        Collection<PartGroup> groups = new DesksPartGroupGenerator().createDeskGroups(desks);
-        Document[] documents = new DocRenderer().makeDoc(groups);
+    private Document[] renderDocuments(DesksModel model) {
+        SimplePageDecorator pageDecorator = new SimplePageDecorator();
+        pageDecorator.setHeaderText(model.pageHeader);
+        if(model.pageFooter != null)
+            pageDecorator.setFooterText(model.pageFooter + ", Generated using TechDraw (http://techdraw.org/)");
+        else
+            pageDecorator.setFooterText("Generated using TechDraw (http://techdraw.org/)");
+
+        DocRenderer renderer = new DocRenderer();
+        renderer.setPageDecorator(pageDecorator);
+
+        Collection<PartGroup> groups = new DesksPartGroupGenerator().createDeskGroups(model.desks);
+        return renderer.makeDoc(groups);
+    }
+
+    private String renderSVG(DesksModel model) {
+        Document[] documents = renderDocuments(model);
 
         try {
             DOMSource domSource = new DOMSource(documents[0]);
@@ -52,7 +66,7 @@ public class GeneratorController {
     }
 
     @RequestMapping(value = "/svg", method = POST /* TODO:, produces = "image/svg+xml"*/)
-    public @ResponseBody ResponseEntity<String> generateSVG(@RequestBody ArrayList<Desk> request) {
+    public @ResponseBody ResponseEntity<String> generateSVG(@RequestBody DesksModel request) {
         String svg = renderSVG(request);
         return ResponseEntity.ok()
                 .contentLength(svg.length())
@@ -61,7 +75,7 @@ public class GeneratorController {
     }
 
     @RequestMapping(value = "/pdf", method = POST)
-    public @ResponseBody ResponseEntity<byte[]> generatePDF(@RequestBody ArrayList<Desk> desks) {
+    public @ResponseBody ResponseEntity<byte[]> generatePDF(@RequestBody DesksModel desks) {
         String svg = renderSVG(desks);
         byte[] pdf = transformToPDF(svg);
 
