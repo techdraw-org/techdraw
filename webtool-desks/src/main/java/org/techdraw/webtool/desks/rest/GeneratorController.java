@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.techdraw.desks.DesksPartGroupGenerator;
-import org.techdraw.sheets.DocRenderer;
-import org.techdraw.sheets.SimplePageDecorator;
+import org.techdraw.sheets.*;
 import org.techdraw.sheets.api.PartGroup;
 import org.techdraw.webtool.desks.models.DesksModel;
 import org.w3c.dom.Document;
@@ -24,7 +23,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -46,7 +47,12 @@ public class GeneratorController {
         renderer.setPageDecorator(pageDecorator);
 
         Collection<PartGroup> groups = new DesksPartGroupGenerator().createDeskGroups(model.desks);
-        return renderer.makeDoc(groups);
+        List<DocPartDrawer> docPartDrawers = new ArrayList<>();
+        if(model.documentTitle != null)
+            docPartDrawers.add(new TitleDrawer(model.documentTitle));
+        groups.stream().forEach(g -> docPartDrawers.add(new SimpleGroupDrawer(g)));
+
+        return renderer.makeDoc(docPartDrawers);
     }
 
     private String renderSVG(DesksModel model) {

@@ -2,7 +2,6 @@ package org.techdraw.sheets;
 
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.techdraw.sheets.api.BoxedElement;
-import org.techdraw.sheets.api.PartGroup;
 import org.techdraw.sheets.containers.GroupElement;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -19,7 +18,7 @@ import java.util.Locale;
 public class DocRenderer {
     private PageDecorator pageDecorator = null;
 
-    public Document[] makeDoc(Collection<PartGroup> groups) {
+    public Document[] makeDoc(Collection<DocPartDrawer> groups) {
         String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
         DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
 
@@ -35,8 +34,8 @@ public class DocRenderer {
 
         // TODO: find better fix
         Locale.setDefault(Locale.ENGLISH);
-        for (PartGroup g : groups) {
-            GroupDrawer current = new SimpleGroupDrawer(g);
+        for (DocPartDrawer g : groups) {
+            DocPartDrawer current = g;
             do {
                 Element svgRoot;
                 if (doc == null) {
@@ -55,7 +54,7 @@ public class DocRenderer {
                     svgRoot = doc.getDocumentElement();
                 }
 
-                GroupDrawer.DrawResult dr = current.draw(xmax, height - y);
+                DocPartDrawer.DrawResult dr = current.draw(xmax, height - y);
                 BoxedElement be = dr.getBoxedElement();
                 svgRoot.appendChild(GroupElement.translate(be, xoffset, y).toSvgElement(doc, svgNS));
                 y += be.getHeight() + 5;
