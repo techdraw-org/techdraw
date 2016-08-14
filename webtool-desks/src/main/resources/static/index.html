@@ -45,6 +45,20 @@
                     <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
                     <button class="primary" type="button" ng-click="vm.generatePDF()">Generate PDF</button>
                 </div>
+                <div class="extra-options">
+                    <span>
+                        <label for="title">Title</label>
+                        <input id="title" ng-model="vm.documentOptions.title" />
+                    </span>
+                    <span>
+                        <label for="header">Header</label>
+                        <input id="header" ng-model="vm.documentOptions.header" />
+                    </span>
+                    <span>
+                        <label for="footer">Footer</label>
+                        <input id="footer" ng-model="vm.documentOptions.footer" />
+                    </span>
+                </div>
             </form>
         </div>
         <div style="font-size: 0.67em" class="styled-gc-1-2">
