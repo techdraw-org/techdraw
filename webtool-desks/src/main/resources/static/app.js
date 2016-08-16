@@ -3,13 +3,23 @@ angular
     .module('desksApp', [])
     .controller('DesksController', function($http, $window) {
         this.model = {
-            desks: [
-                {a: 500, b: 100, width: 18, edges: [true, true, true, true]},
-                {a: 300, b: 200, width: 18, edges: [true, false, true, false]},
-                {a: 300, b: 200, width: 12, edges: [true, false, true, false]},
-                {a: 300, b: 200, width: 12, edges: [true, false, true, false]},
-                {a: 300, b: 200, width: 12, edges: [true, false, true, false]}
-            ]
+            groups : [
+                {
+                    material : { decor: 'Svetly buk', width : 18},
+                    desks: [
+                        {key: 'a01', a: 500, b: 100, edges: [true, true, true, true]},
+                        {key: 'a02', a: 300, b: 200, edges: [true, false, true, false]},
+                    ]
+                },
+                {
+                    material : { decor: 'Svetly buk', width : 12},
+                    desks: [
+                        {key: 'b01', a: 300, b: 200, edges: [true, false, true, false]},
+                        {key: 'c01', a: 300, b: 200, edges: [true, false, true, false]},
+                        {key: 'd01', a: 300, b: 200, edges: [true, false, true, false]}
+                    ]
+                }
+            ],
         };
         this.formattedPreview = false;
         this.generateSVG = function() {
@@ -26,10 +36,15 @@ angular
                     $window.saveAs(blob, "sheets.pdf");
                 });
         };
-        this.addDesk = function() {
-            this.desks.push({});
+        this.addDesk = function(group) {
+            group.desks.push({});
         };
-        this.removeDesk = function(index) {
-            this.desks.splice(index,1);
+        this.removeDesk = function(group) {
+            group.splice(index,1);
+        };
+        this.newDeskPartGroup = function() {
+            this.model.groups.push({
+                desks: [{}]
+            });
         };
     });

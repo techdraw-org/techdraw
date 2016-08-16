@@ -1,45 +1,95 @@
+@import url(https://fonts.googleapis.com/css?family=Mada:400,300);
+@import '_basestyle.scss';
+
+$propertiesPaneColor: #f6f6f6;
+
+label {
+  font-family: 'Mada', sans-serif;
+  font-weight: 300;
+}
+
+table th {
+  font-family: 'Mada', sans-serif;
+  text-align: left;
+  font-weight: 300;
+}
+
+button {
+  font-family: 'Mada', sans-serif;
+}
+
+td {
+  margin: 0;
+  padding: 0;
+}
+
 $boxSpacing: 10pt;
 
 html {
   overflow-y: scroll;
+  overflow-y: hidden;
+  padding: 0;
+  height: 100%;
+  position: relative;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  position: relative;
+}
+
+.app-title {
+  margin: 0;
+  padding: 8pt 24pt 4pt;
+  font-family: 'Mada', sans-serif;
+  letter-spacing: 4pt;
+  font-size: 22pt;
+  font-weight: bold;
 }
 
 
-.styled-form {
+input[type="number"],
+input[type="button"],
+button {
+  margin: 0.2em;
 
-  input[type="number"],
-  input[type="button"],
-  button {
-    margin: 0.2em;
+}
+
+input[type="submit"],
+input[type="button"],
+button {
+  border: none;
+  background: #e7e7e7;
+  padding: 0.3em 0.5em;
+  margin: 0.2em 0.1em;
+  vertical-align: baseline;
+
+  &.remove {
+    margin: 0;
+    padding: 2pt;
+    width: 18pt;
+    height: 18pt;
+    background: #ffaaaa;
   }
 
-  input[type="submit"],
-  input[type="button"],
-  button {
-    border: solid 1px #cccccc;
-    background: #e7e7e7;
-    padding: 0.3em 0.5em;
-    margin: 0.2em 0.1em;
-    vertical-align: baseline;
+  &:hover {
+    background: #f3f3f3;
+  }
 
-    &:hover {
-      background: #f3f3f3;
-    }
+  &:active {
+    background: #dadada;
+  }
 
-    &:active {
-      background: #dadada;
-    }
-
-    &.primary {
-      background: #48b2f0;
-    }
+  &.primary {
+    background: #48b2f0;
   }
 }
+
 
 .buttons {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12pt;
 
   :first-child {
     margin-left: 0;
@@ -47,6 +97,10 @@ html {
   :last-child {
     margin-right: 0;
   }
+}
+
+.flex-space {
+  flex: 1 1;
 }
 
 .styled-table {
@@ -77,60 +131,11 @@ html {
   }
 }
 
-.styled-g {
-  display: flex;
-  position: relative;
-  flex-wrap: wrap;
-
-  > div {
-    padding: 7pt;
-  }
-}
-
-.styled-g-2 > *,
-.styled-gc-1-2 {
-  flex: 0 0 50%;
-  box-sizing: border-box;
-  width: 0px;
-}
-
-.styled-g-3 > *,
-.styled-gc-1-3 {
-  flex: 0 0 33.33332%;
-  box-sizing: border-box;
-  width: 0px;
-}
-.styled-gc-2-3 {
-  flex: 0 0 66.6666%;
-  box-sizing: border-box;
-  width: 0px;
-}
-
-.styled-g-4 > *,
-.styled-gc-1-4 {
-  flex: 0 0 25%;
-  box-sizing: border-box;
-  width: 0px;
-}
-
-.styled-g-6 > *,
-.styled-gc-1-6 {
-  flex: 0 0 16.6666%;
-  box-sizing: border-box;
-  width: 0px;
-}
-.styled-gc-2-6 {
-  flex: 0 0 33.333%;
-  box-sizing: border-box;
-  width: 0px;
-}
-
 .content-box {
-  border: solid 1px #cccccc;
-  background: #f3f3f3;
+  /*border: solid 1px #cccccc;
+  background: #f3f3f3;*/
   padding: $boxSpacing;
   position: relative;
-  margin-bottom: 12pt;
 }
 
 pre {
@@ -174,4 +179,45 @@ pre {
     box-sizing: border-box;
     width: 100%;
   }
+}
+
+.desk-group {
+  border-bottom: solid 1px #dedede;
+  background: linear-gradient(to top, #efefef, rgba(243,243,243,0) 7pt);
+  padding-top: 6pt;
+}
+
+.desk-group > .content-box {
+  @extend .styled-g;
+
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.desk-group .content-box > div:first-child {
+  @extend  .styled-gc-1-4;
+
+  span > * {
+    display: block;
+  }
+
+  span > input {
+    margin-bottom: $boxSpacing / 2;
+  }
+}
+
+.desk-group .content-box > div {
+  @extend  .styled-gc-3-4;
+}
+
+.desk-group-title {
+  font-family: 'Mada', sans-serif;
+  letter-spacing: 0pt;
+  word-spacing: 2pt;
+  font-size: 1.1em;
+  padding: 8pt 0pt;
+}
+
+.properties_pane > form > * {
+  margin-bottom: 9pt;
 }

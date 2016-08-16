@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.techdraw.desks.DesksPartGroupGenerator;
+import org.techdraw.desks.Desk;
 import org.techdraw.sheets.*;
 import org.techdraw.sheets.api.PartGroup;
 import org.techdraw.webtool.desks.models.DesksModel;
@@ -24,8 +24,9 @@ import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -46,11 +47,26 @@ public class GeneratorController {
         DocRenderer renderer = new DocRenderer();
         renderer.setPageDecorator(pageDecorator);
 
-        Collection<PartGroup> groups = new DesksPartGroupGenerator().createDeskGroups(model.desks);
         List<DocPartDrawer> docPartDrawers = new ArrayList<>();
+
+        // add title, if present
         if(model.documentTitle != null)
             docPartDrawers.add(new TitleDrawer(model.documentTitle));
-        groups.stream().forEach(g -> docPartDrawers.add(new SimpleGroupDrawer(g)));
+
+        // add groups
+        model.groups.stream().forEach(group -> {
+            try {
+                PartGroup partGroup = new PartGroup();
+                partGroup.children = group.desks.stream().map(Desk::createElement).collect(Collectors.toList());
+                partGroup.metadata = new HashMap<>();
+                partGroup.metadata.put("Desk decor:", group.material.decor);
+                partGroup.metadata.put("Desk width:", String.format("%.1f", group.material.width));
+                docPartDrawers.add(new SimpleGroupDrawer(partGroup));
+            } catch (Exception e)  {
+                System.err.println("ignoring: " + group);
+                e.printStackTrace();
+            }
+        });
 
         return renderer.makeDoc(docPartDrawers);
     }

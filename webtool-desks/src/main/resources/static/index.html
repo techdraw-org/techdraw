@@ -8,42 +8,63 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
 </head>
 <body ng-app="desksApp">
-<div ng-controller="DesksController as vm">
-    <h3>Desks</h3>
-    <div class="styled-g">
-        <div class="styled-gc-2-3">
+<div class="app-container" ng-controller="DesksController as vm">
+    <div class="app-title">TechDraw: Desks</div>
+    <div class="toolbar">
+        <button type="button" ng-click="vm.newDeskPartGroup()">New group</button>
+        <div class="flex-space"></div>
+        <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
+        <button class="primary" type="button" ng-click="vm.generatePDF()">Generate PDF</button>
+    </div>
+    <div class="styled-g" style="flex: 1 1 0">
+        <div class="properties_pane">
             <form class="styled-form" ng-submit="false">
-                <table class="styled-table" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th>a</th>
-                            <th>b</th>
-                            <th>width</th>
-                            <th>edges</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="desk in vm.model.desks">
-                            <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
-                            <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
-                            <td><input type="number" placeholder="width" min="0" max="1000" step="1" ng-model="desk.width" required /></td>
-                            <td>
-                                <input type="checkbox" ng-model="desk.edges[0]" />
-                                <input type="checkbox" ng-model="desk.edges[1]" />
-                                <input type="checkbox" ng-model="desk.edges[2]" />
-                                <input type="checkbox" ng-model="desk.edges[3]" />
-                            </td>
-                            <td>
-                                <button type="button" ng-click="vm.removeDesk($index)">X</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="buttons">
-                    <button type="button" ng-click="vm.addDesk()">Add desk</button>
-                    <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
-                    <button class="primary" type="button" ng-click="vm.generatePDF()">Generate PDF</button>
+                <div class="desk-group" ng-repeat="group in vm.model.groups">
+                    <div class="desk-group-title">Desks ({{group.material.decor}}, {{group.material.width}}mm)</div>
+                    <div class="content-box">
+                        <div class="desk-group-material">
+                            <span>
+                                <label for="decor_{{$index}}">Decor</label>
+                                <input id="decor_{{$index}}" ng-model="group.material.decor" required />
+                            </span>
+                            <span>
+                                <label for="width_{{$index}}">Width</label>
+                                <input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="group.material.width" required />
+                            </span>
+                        </div>
+                        <div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Key</th>
+                                        <th>a</th>
+                                        <th>b</th>
+                                        <th>Edges</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="desk in group.desks">
+                                        <td><input type="text" placeholder="key" ng-model="desk.key" /></td>
+                                        <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
+                                        <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
+                                        <td>
+                                            <input type="checkbox" ng-model="desk.edges[0]" />
+                                            <input type="checkbox" ng-model="desk.edges[1]" />
+                                            <input type="checkbox" ng-model="desk.edges[2]" />
+                                            <input type="checkbox" ng-model="desk.edges[3]" />
+                                        </td>
+                                        <td>
+                                            <button class="remove" type="button" ng-click="vm.removeDesk($index)">X</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="buttons">
+                                <button type="button" ng-click="vm.addDesk(group)">Add desk</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="extra-options">
                     <span>
@@ -61,7 +82,7 @@
                 </div>
             </form>
         </div>
-        <div style="font-size: 0.67em" class="styled-gc-1-3">
+        <div style="font-size: 0.67em" class="preview_pane">
             <div class=" content-box">
                 <div class="overlay top right">
                     <input type="checkbox" ng-model="vm.formattedPreview" id="formattedPreview"/>

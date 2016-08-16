@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class DesksModel {
 
-    public ArrayList<Desk> desks;
+    public ArrayList<DeskGroupModel> groups;
     public String documentTitle;
     public String pageHeader;
     public String pageFooter;
