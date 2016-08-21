@@ -1,7 +1,7 @@
 
 angular
-    .module('desksApp', [])
-    .controller('DesksController', function($http, $window) {
+    .module('desksApp', ['ngDialog', 'ngStorage'])
+    .controller('DesksController', function($http, $window, $localStorage, ngDialog) {
         this.model = {
             groups : [
                 {
@@ -39,12 +39,40 @@ angular
         this.addDesk = function(group) {
             group.desks.push({});
         };
-        this.removeDesk = function(group) {
-            group.splice(index,1);
+        this.removeDesk = function(group,index) {
+            group.desks.splice(index,1);
         };
         this.newDeskPartGroup = function() {
             this.model.groups.push({
                 desks: [{}]
             });
         };
+        this.open = function() {
+            var vm = this;
+            ngDialog.openConfirm({
+                template: 'dialog/open.html',
+                className: 'ngdialog-theme-default'
+            }).then(function(){
+                vm.loadDocument('doc'); // TODO: use id
+            });
+        };
+        this.save = function() {
+            if(!this.documentId) {
+                var vm = this;
+                ngDialog.openConfirm({
+                    template: 'dialog/save.html',
+                    className: 'ngdialog-theme-default',
+                }).then(function(){
+                    vm.saveDocument('doc'); // TODO: use id
+                });
+            }
+        };
+        this.loadDocument = function(id) {
+            this.model = JSON.parse(JSON.stringify($localStorage.documents[id]));
+        };
+        this.saveDocument = function(id) {
+            if(!$localStorage.documents)
+                $localStorage.documents = {};
+            $localStorage.documents[id] = JSON.parse(JSON.stringify(this.model));
+        }
     });

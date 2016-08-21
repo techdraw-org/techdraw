@@ -2,15 +2,22 @@
 <html>
 <head>
     <title>webapp: desks</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="/angular/angular.js"></script>
+    <script src="/ngstorage/ngStorage.js"></script>
+    <script src="/ng-dialog/js/ngDialog.js"></script>
     <script src="FileSaver.js"></script><!-- TODO: more sophisticated way -->
     <script src="app.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/ng-dialog/css/ngDialog.css" />
+    <link rel="stylesheet" type="text/css" href="/ng-dialog/css/ngDialog-theme-default.css" />
 </head>
 <body ng-app="desksApp">
 <div class="app-container" ng-controller="DesksController as vm">
     <div class="app-title">TechDraw: Desks</div>
     <div class="toolbar">
+        <button type="button" ng-click="vm.open()">Open</button>
+        <button type="button" ng-click="vm.save()">Save</button>
+        <div class="flex-space"></div>
         <button type="button" ng-click="vm.newDeskPartGroup()">New group</button>
         <div class="flex-space"></div>
         <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
@@ -55,7 +62,7 @@
                                             <input type="checkbox" ng-model="desk.edges[3]" />
                                         </td>
                                         <td>
-                                            <button class="remove" type="button" ng-click="vm.removeDesk($index)">X</button>
+                                            <button class="remove" type="button" ng-click="vm.removeDesk(group, $index)">X</button>
                                         </td>
                                     </tr>
                                 </tbody>

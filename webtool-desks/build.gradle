@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
@@ -8,6 +9,7 @@ buildscript {
     dependencies {
         classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE'
         classpath 'gradle.plugin.org.kravemir.gradle.sass:GradleSassPlugin:1.2.1'
+        classpath 'com.craigburke.gradle:client-dependencies:1.1.4'
     }
 }
 
@@ -17,12 +19,23 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: "org.kravemir.gradle.sass"
+apply plugin: 'com.craigburke.client-dependencies'
 
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+clientDependencies {
+    installDir = "$buildDir/assets/static"
+
+    bower {
+        'angular'('1.5.8')
+        'ng-dialog'('0.6.2')
+        'ngstorage'('0.3.11')
+    }
 }
 
 sass {
@@ -32,6 +45,12 @@ sass {
 
         outSubDir = "static/css"
         registerInSourceSets ( 'main' )
+    }
+}
+
+sourceSets {
+    main {
+        runtimeClasspath += [file("$buildDir/assets")]
     }
 }
 
