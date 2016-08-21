@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Miroslav Kravec
  */
-public class App {
+public class DemoApp {
     static Collection<Desk> parts = Collections.unmodifiableList(Arrays.asList(
             new Desk(800, 100, 18, new boolean[] {true,true,true,true}),
             new Desk(100, 300, 18, new boolean[] {true,true,true,true}),
@@ -130,6 +130,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        new App().run();
+        new DemoApp().run();
     }
 }

@@ -1,4 +1,7 @@
 .gradle
-.idea
 build
 /.nb-gradle/
+
+# exclude idea files, include shared run configurations
+.idea/*
+!.idea/runConfigurations
