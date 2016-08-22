@@ -22,7 +22,18 @@ angular
             ],
         };
         this.formattedPreview = false;
+        this.checkStructure = function() {
+            for(var gi = 0; gi < this.model.groups.length; gi++) {
+                var group = this.model.groups[gi];
+                for(var di = 0; di < group.desks.length; di++) {
+                    var desk = group.desks[di];
+                    var e = desk.edges;
+                    desk.edges = [e[0], e[1], e[2], e[3]];
+                }
+            }
+        };
         this.generateSVG = function() {
+            this.checkStructure();
             $http.post('/svg',this.model, {responseType:'arraybuffer'})
                 .success(function (data) {
                     var blob = new Blob([data], {type: "image/xml+svg"});
@@ -30,6 +41,7 @@ angular
                 });
         };
         this.generatePDF = function() {
+            this.checkStructure();
             $http.post('/pdf',this.model, {responseType:'arraybuffer'})
                 .success(function (data) {
                     var blob = new Blob([data], {type: "application/pdf"});
