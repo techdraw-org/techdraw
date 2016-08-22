@@ -118,7 +118,8 @@ public class GeneratorController {
             svgOut.flush();
             svgOut.close();
 
-            String cmdLine = String.format("rsvg-convert -f pdf -o %s %s", pdfFile.getAbsolutePath(), svgFile.getAbsolutePath());
+            //String cmdLine = String.format("rsvg-convert -f pdf -o %s %s", pdfFile.getAbsolutePath(), svgFile.getAbsolutePath());
+            String cmdLine = String.format("inkscape %s --export-pdf=%s", svgFile.getAbsolutePath(), pdfFile.getAbsolutePath());
             System.out.println(cmdLine);
             Process process = Runtime.getRuntime().exec(cmdLine);
             process.waitFor();
