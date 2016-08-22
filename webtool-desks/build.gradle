@@ -50,7 +50,7 @@ sass {
 
 sourceSets {
     main {
-        runtimeClasspath += [file("$buildDir/assets")]
+        output.dir("$buildDir/assets")
     }
 }
 
