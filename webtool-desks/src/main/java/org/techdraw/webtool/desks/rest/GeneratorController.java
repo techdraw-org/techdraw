@@ -36,7 +36,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 public class GeneratorController {
 
+    private static String getNullIfEmpty(String str) {
+        if(str != null && "".equals(str.trim()))
+            return null;
+        return str;
+    }
+
     private Document[] renderDocuments(DesksModel model) {
+        // clear empty values
+        model.documentTitle = getNullIfEmpty(model.documentTitle);
+        model.pageHeader = getNullIfEmpty(model.pageHeader);
+        model.pageFooter = getNullIfEmpty(model.pageFooter);
+
+
         SimplePageDecorator pageDecorator = new SimplePageDecorator();
         pageDecorator.setHeaderText(model.pageHeader);
         if(model.pageFooter != null)
@@ -46,6 +58,7 @@ public class GeneratorController {
 
         DocRenderer renderer = new DocRenderer();
         renderer.setPageDecorator(pageDecorator);
+        renderer.setPageStyle(model.pageStyle);
 
         List<DocPartDrawer> docPartDrawers = new ArrayList<>();
 

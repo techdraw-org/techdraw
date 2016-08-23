@@ -1,6 +1,6 @@
 package org.techdraw.webtool.desks.models;
 
-import org.techdraw.desks.Desk;
+import models.PageStyle;
 
 import java.util.ArrayList;
 
@@ -13,4 +13,6 @@ public class DesksModel {
     public String documentTitle;
     public String pageHeader;
     public String pageFooter;
+
+    public PageStyle pageStyle;
 }

@@ -20,6 +20,12 @@ angular
                     ]
                 }
             ],
+            pageStyle : {
+                marginTop : 18,
+                marginBottom: 15,
+                marginLeft : 12,
+                marginRight : 12,
+            },
         };
         this.formattedPreview = false;
         this.checkStructure = function() {
