@@ -15,19 +15,28 @@
 <div class="app-container" ng-controller="DesksController as vm">
     <div class="app-title">TechDraw: Desks</div>
     <div class="toolbar">
-        <button type="button" ng-click="vm.open()">Open</button>
-        <button type="button" ng-click="vm.save()">Save</button>
+        <div class="toolbar-button-group">
+            <button type="button" ng-click="vm.open()">Open</button>
+            <button type="button" ng-click="vm.save()">Save</button>
+        </div>
+        <div class="toolbar-button-group">
+            <button type="button" ng-click="vm.newDeskPartGroup()">New group</button>
+        </div>
         <div class="flex-space"></div>
-        <button type="button" ng-click="vm.newDeskPartGroup()">New group</button>
-        <div class="flex-space"></div>
-        <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
-        <button class="primary" type="button" ng-click="vm.generatePDF()">Generate PDF</button>
+        <div class="toolbar-button-group">
+            <button class="secondary" type="button" ng-click="vm.generateSVG()">Generate SVG</button>
+            <button class="primary" type="button" ng-click="vm.generatePDF()">Generate PDF</button>
+        </div>
     </div>
     <div class="styled-g" style="flex: 1 1 0">
         <div class="properties_pane">
             <form class="styled-form" ng-submit="false">
                 <div class="desk-group" ng-repeat="group in vm.model.groups">
-                    <div class="desk-group-title">Desks ({{group.material.decor}}, {{group.material.width}}mm)</div>
+                    <div style="display:flex">
+                        <div class="desk-group-title">Desks ({{group.material.decor}}, {{group.material.width}}mm)</div>
+                        <div class="flex-space"></div>
+                        <button class="remove" type="button" ng-click="vm.removeGroup($index)">X</button>
+                    </div>
                     <div class="content-box">
                         <div class="desk-group-material">
                             <span>

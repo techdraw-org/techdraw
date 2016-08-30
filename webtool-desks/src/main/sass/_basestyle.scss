@@ -15,7 +15,7 @@ div.app-container {
   border-top: solid 1px #d3d3d3;
   border-bottom: solid 1px #cccccc;
   background: #eeeeee;
-  padding: 0 2pt;
+  padding: 0 12pt;
   margin: 0;
   background: linear-gradient(to bottom, #f0f0f0, #eeeeee, #eaeaea);
 
@@ -25,6 +25,17 @@ div.app-container {
     padding: 0.4em 0.5em 0.2em;
     background: none;
     letter-spacing: 1pt;
+    padding: 5pt 5pt 4pt;
+    margin: 0;
+    border: none;
+  }
+
+  button:first-child {
+    margin-left: 7pt;
+  }
+
+  button:last-child {
+    margin-right: 7pt;
   }
 
   button:hover {
@@ -33,6 +44,15 @@ div.app-container {
 
   button.primary {
     background: #d3dfeb;
+  }
+}
+
+.toolbar-button-group {
+  border-left: solid 1px #d3d3d3;
+  border-right: solid 1px #d3d3d3;
+
+  + .toolbar-button-group {
+    border-left: none;
   }
 }
 

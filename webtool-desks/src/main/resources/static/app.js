@@ -1,7 +1,7 @@
 
 angular
     .module('desksApp', ['ngDialog', 'ngStorage'])
-    .controller('DesksController', function($http, $window, $localStorage, ngDialog) {
+    .controller('DesksController', function($http, $window, $localStorage, $scope, ngDialog) {
         this.model = {
             groups : [
                 {
@@ -28,6 +28,18 @@ angular
             },
         };
         this.formattedPreview = false;
+
+        this.confirmDialog = function(title, message, confirm) {
+            return ngDialog.openConfirm({
+                data: {
+                    title: title,
+                    message: message,
+                    confirm: confirm
+                },
+                template: 'dialog/confirm.html',
+            });
+        };
+
         this.checkStructure = function() {
             for(var gi = 0; gi < this.model.groups.length; gi++) {
                 var group = this.model.groups[gi];
@@ -53,6 +65,16 @@ angular
                     var blob = new Blob([data], {type: "application/pdf"});
                     $window.saveAs(blob, "sheets.pdf");
                 });
+        };
+        this.removeGroup = function(index){
+            var vm = this;
+            this.confirmDialog(
+                'Remove group',
+                'Are you sure, that you want remove this group?',
+                'Remove'
+            ).then(function(){
+                vm.model.groups.splice(index,1);
+            });
         };
         this.addDesk = function(group) {
             group.desks.push({});
