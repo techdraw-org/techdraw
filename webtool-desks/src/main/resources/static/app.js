@@ -1,7 +1,19 @@
 
 angular
     .module('desksApp', ['ngDialog', 'ngStorage'])
-    .controller('DesksController', function($http, $window, $localStorage, $scope, ngDialog) {
+    .service('ConfirmationService', function(ngDialog) {
+        this.open = function(text) {
+            return ngDialog.openConfirm({
+                data: {
+                    title: text.title,
+                    message: text.message,
+                    confirm: text.confirm
+                },
+                template: 'dialog/confirm.html',
+            });
+        };
+    })
+    .controller('DesksController', function($http, $window, $localStorage, $scope, ngDialog, ConfirmationService) {
         this.model = {
             groups : [
                 {
@@ -28,17 +40,6 @@ angular
             },
         };
         this.formattedPreview = false;
-
-        this.confirmDialog = function(title, message, confirm) {
-            return ngDialog.openConfirm({
-                data: {
-                    title: title,
-                    message: message,
-                    confirm: confirm
-                },
-                template: 'dialog/confirm.html',
-            });
-        };
 
         this.checkStructure = function() {
             for(var gi = 0; gi < this.model.groups.length; gi++) {
@@ -68,11 +69,11 @@ angular
         };
         this.removeGroup = function(index){
             var vm = this;
-            this.confirmDialog(
-                'Remove group',
-                'Are you sure, that you want remove this group?',
-                'Remove'
-            ).then(function(){
+            ConfirmationService.open({
+                title: 'Remove group',
+                message: 'Are you sure, that you want remove this group?',
+                confirm: 'Remove',
+            }).then(function(){
                 vm.model.groups.splice(index,1);
             });
         };
@@ -111,8 +112,24 @@ angular
             this.model = JSON.parse(JSON.stringify($localStorage.documents[id]));
         };
         this.saveDocument = function(id) {
+            var vm = this;
             if(!$localStorage.documents)
                 $localStorage.documents = {};
-            $localStorage.documents[id] = JSON.parse(JSON.stringify(this.model));
+            var save = function() {
+                $localStorage.documents[id] = JSON.parse(JSON.stringify(vm.model));
+            };
+
+            // ask overwrite
+            if($localStorage.documents[id]) {
+                ConfirmationService.open({
+                    title: 'Overwrite previous',
+                    message: 'This will overwrite previously saved stuff..',
+                    confirm: 'Overwrite',
+                })
+                .then(save);
+            } else {
+                save();
+            }
+
         }
     });
