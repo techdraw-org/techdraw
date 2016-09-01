@@ -19,8 +19,10 @@
             <button type="button" ng-click="vm.open()">Open</button>
             <button type="button" ng-click="vm.save()">Save</button>
         </div>
-        <div class="toolbar-button-group">
-            <button type="button" ng-click="vm.newDeskPartGroup()">New group</button>
+        <div class="toolbar-button-group" ng-repeat="group in ToolbarService.groups['editing']">
+            <span ng-repeat="button in group">
+                <button type="button" ng-click="button.callback()">{{button.title}}</button>
+            </span>
         </div>
         <div class="flex-space"></div>
         <div class="toolbar-button-group">

@@ -1,10 +1,26 @@
 
 angular
     .module('desksApp', ['ngDialog', 'ngStorage'])
+    .service('ToolbarService', function($rootScope){
+        $rootScope.ToolbarService = this;
+        this.groups = {};
+        this.addGroup = function(location, group) {
+            var groupLocation = this.groups[location];
+            if(!groupLocation)
+                groupLocation = this.groups[location] = [];
+            groupLocation.push(group);
+        };
+        this.removeGroup = function(location, group) {
+            var groupLocation = this.groups[location];
+            if(groupLocation) {
+                groupLocation.splice(groupLocation.indexOf(group), 1);
+            }
+        };
+    })
     .component('desksEditor', {
         templateUrl: "desks/desksEditorComponent.html",
         bindings: { model: '=' },
-        controller : function(ConfirmationService) {
+        controller : function(ConfirmationService,ToolbarService) {
             this.removeGroup = function(index){
                 var vm = this;
                 ConfirmationService.open({
@@ -20,6 +36,22 @@ angular
             };
             this.removeDesk = function(group,index) {
                 group.desks.splice(index,1);
+            };
+            this.newDeskPartGroup = function() {
+                this.model.groups.push({
+                    material : { decor: 'Svetly buk', width : 1},
+                    desks: [{}]
+                });
+            };
+            this.$onInit = function() {
+                this.toolbarItems = [
+                    {
+                        title : 'New group',
+                        description : 'Add new desk group',
+                        callback : this.newDeskPartGroup.bind(this)
+                    }
+                ];
+                ToolbarService.addGroup('editing', this.toolbarItems);
             };
         }
     })
@@ -69,7 +101,8 @@ angular
                 for(var di = 0; di < group.desks.length; di++) {
                     var desk = group.desks[di];
                     var e = desk.edges;
-                    desk.edges = [e[0], e[1], e[2], e[3]];
+                    if(e)
+                        desk.edges = [e[0], e[1], e[2], e[3]];
                 }
             }
         };
@@ -88,11 +121,6 @@ angular
                     var blob = new Blob([data], {type: "application/pdf"});
                     $window.saveAs(blob, "sheets.pdf");
                 });
-        };
-        this.newDeskPartGroup = function() {
-            this.model.groups.push({
-                desks: [{}]
-            });
         };
         this.open = function() {
             var vm = this;
