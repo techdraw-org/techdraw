@@ -1,6 +1,28 @@
 
 angular
     .module('desksApp', ['ngDialog', 'ngStorage'])
+    .component('desksEditor', {
+        templateUrl: "desks/desksEditorComponent.html",
+        bindings: { model: '=' },
+        controller : function(ConfirmationService) {
+            this.removeGroup = function(index){
+                var vm = this;
+                ConfirmationService.open({
+                    title: 'Remove group',
+                    message: 'Are you sure, that you want remove this group?',
+                    confirm: 'Remove',
+                }).then(function(){
+                    vm.model.groups.splice(index,1);
+                });
+            };
+            this.addDesk = function(group) {
+                group.desks.push({});
+            };
+            this.removeDesk = function(group,index) {
+                group.desks.splice(index,1);
+            };
+        }
+    })
     .service('ConfirmationService', function(ngDialog) {
         this.open = function(text) {
             return ngDialog.openConfirm({
@@ -66,22 +88,6 @@ angular
                     var blob = new Blob([data], {type: "application/pdf"});
                     $window.saveAs(blob, "sheets.pdf");
                 });
-        };
-        this.removeGroup = function(index){
-            var vm = this;
-            ConfirmationService.open({
-                title: 'Remove group',
-                message: 'Are you sure, that you want remove this group?',
-                confirm: 'Remove',
-            }).then(function(){
-                vm.model.groups.splice(index,1);
-            });
-        };
-        this.addDesk = function(group) {
-            group.desks.push({});
-        };
-        this.removeDesk = function(group,index) {
-            group.desks.splice(index,1);
         };
         this.newDeskPartGroup = function() {
             this.model.groups.push({
