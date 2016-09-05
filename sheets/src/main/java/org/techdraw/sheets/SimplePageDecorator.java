@@ -13,19 +13,19 @@ public class SimplePageDecorator implements PageDecorator {
     private String footerText;
 
     @Override
-    public double headerHeight() {
+    public double headerHeight(double marginTop) {
         if(headerText == null)
             return 0;
 
-        return 5; // TODO: to calculate height
+        return Math.max(0, 7 - marginTop); // TODO: to calculate height
     }
 
     @Override
-    public double footerHeight() {
+    public double footerHeight(double marginBottom) {
         if(footerText == null)
             return 0;
 
-        return 5; // TODO: to calculate height
+        return Math.max(0, 7 - marginBottom); // TODO: to calculate height
     }
 
     @Override

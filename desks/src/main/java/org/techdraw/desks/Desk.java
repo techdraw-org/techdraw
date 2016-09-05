@@ -5,6 +5,7 @@ import org.techdraw.sheets.containers.CustomBoxedElement;
 import org.techdraw.sheets.containers.GroupElement;
 import org.techdraw.sheets.elements.LineElement;
 import org.techdraw.sheets.elements.TextElement;
+import org.techdraw.sheets.elements.mix.NamedElementBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -17,6 +18,7 @@ import static java.lang.Math.sqrt;
  */
 public class Desk {
 
+    String key;
     double a;
     double b;
     double width;
@@ -178,7 +180,13 @@ public class Desk {
         group.setWidth(aScaled); // TODO: real sizes should be computed by GroupElement
         group.setHeight(bScaled);
 
-        return group;
+        BoxedElement result = group;
+
+        if(key != null) {
+            result = new NamedElementBuilder(key,group).build();
+        }
+
+        return result;
     }
 
     public double getA() {
@@ -195,5 +203,13 @@ public class Desk {
 
     public boolean[] getEdges() {
         return edges;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

@@ -1,0 +1,86 @@
+
+<form class="styled-form" ng-submit="false">
+    <div class="desk-group" ng-repeat="group in $ctrl.model.groups">
+        <div style="display:flex">
+            <div class="desk-group-title">Desks ({{group.material.decor}}, {{group.material.width}}mm)</div>
+            <div class="flex-space"></div>
+            <button class="remove" type="button" ng-click="$ctrl.removeGroup($index)">X</button>
+        </div>
+        <div class="content-box">
+            <div class="desk-group-material">
+                <span>
+                    <label for="decor_{{$index}}">Decor</label>
+                    <input id="decor_{{$index}}" ng-model="group.material.decor" required />
+                </span>
+                <span>
+                    <label for="width_{{$index}}">Width</label>
+                    <input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="group.material.width" required />
+                </span>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>a</th>
+                        <th>b</th>
+                        <th>Edges</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="desk in group.desks">
+                        <td><input type="text" placeholder="key" ng-model="desk.key" /></td>
+                        <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
+                        <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
+                        <td>
+                            <input type="checkbox" ng-model="desk.edges[0]" />
+                            <input type="checkbox" ng-model="desk.edges[1]" />
+                            <input type="checkbox" ng-model="desk.edges[2]" />
+                            <input type="checkbox" ng-model="desk.edges[3]" />
+                        </td>
+                        <td>
+                            <button class="remove" type="button" ng-click="$ctrl.removeDesk(group, $index)">X</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="buttons">
+                    <button type="button" ng-click="$ctrl.addDesk(group)">Add desk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="extra-options">
+        <span>
+            <label for="title">Title</label>
+            <input id="title" ng-model="$ctrl.model.documentTitle" />
+        </span>
+        <span>
+            <label for="header">Header</label>
+            <input id="header" ng-model="$ctrl.model.pageHeader" />
+        </span>
+        <span>
+            <label for="footer">Footer</label>
+            <input id="footer" ng-model="$ctrl.model.pageFooter" />
+        </span>
+    </div>
+    <div class="extra-options">
+        <span>
+            <label for="marginTop">Margin top</label>
+            <input id="marginTop" ng-model="$ctrl.model.pageStyle.marginTop" />
+        </span>
+        <span>
+            <label for="marginBottom">Margin bottom</label>
+            <input id="marginBottom" ng-model="$ctrl.model.pageStyle.marginBottom" />
+        </span>
+        <span>
+            <label for="marginLeft">Margin left</label>
+            <input id="marginLeft" ng-model="$ctrl.model.pageStyle.marginLeft" />
+        </span>
+        <span>
+            <label for="marginRight">Margin right</label>
+            <input id="marginRight" ng-model="$ctrl.model.pageStyle.marginRight" />
+        </span>
+    </div>
+</form>

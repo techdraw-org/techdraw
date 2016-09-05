@@ -1,5 +1,6 @@
 package org.techdraw.sheets;
 
+import models.PageStyle;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.techdraw.sheets.api.BoxedElement;
 import org.techdraw.sheets.containers.GroupElement;
@@ -16,9 +17,17 @@ import java.util.Locale;
  * @author Miroslav Kravec
  */
 public class DocRenderer {
+    private static PageStyle DEFAULT_STYLE = new PageStyle();
+
     private PageDecorator pageDecorator = null;
 
+    private PageStyle pageStyle;
+
     public Document[] makeDoc(Collection<DocPartDrawer> groups) {
+        PageStyle pageStyle = this.pageStyle;
+        if(pageStyle == null)
+            pageStyle = DEFAULT_STYLE;
+
         String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
         DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
 
@@ -26,11 +35,18 @@ public class DocRenderer {
 
         Document doc = null;
 
-        double xoffset = 10, xmax = 210 - xoffset * 2;
-        double ystart = 5 + (pageDecorator != null ? pageDecorator.headerHeight() : 0), y;
-        double height = 290 - 5 - (pageDecorator != null ? pageDecorator.footerHeight() : 0);
+        double content_offsetX = pageStyle.marginLeft;
+        double content_offsetY = pageStyle.marginTop;
+        double content_sizeX = 210 - pageStyle.marginLeft - pageStyle.marginRight;
+        double content_sizeY = 290 - pageStyle.marginBottom;
 
-        y = ystart;
+        if(pageDecorator != null) {
+            content_offsetY += pageDecorator.headerHeight(pageStyle.marginTop);
+            content_sizeY -= pageDecorator.headerHeight(pageStyle.marginTop);
+            content_sizeY -= pageDecorator.footerHeight(pageStyle.marginBottom);
+        }
+
+        double y = content_offsetY;
 
         // TODO: find better fix
         Locale.setDefault(Locale.ENGLISH);
@@ -49,14 +65,14 @@ public class DocRenderer {
                     svgRoot.setAttributeNS(null, "height", "29.7cm");
                     svgRoot.setAttributeNS(null, "viewBox", "0 0 210 297");
 
-                    y = ystart;
+                    y = content_offsetY;
                 } else {
                     svgRoot = doc.getDocumentElement();
                 }
 
-                DocPartDrawer.DrawResult dr = current.draw(xmax, height - y);
+                DocPartDrawer.DrawResult dr = current.draw(content_sizeX, content_sizeY - y);
                 BoxedElement be = dr.getBoxedElement();
-                svgRoot.appendChild(GroupElement.translate(be, xoffset, y).toSvgElement(doc, svgNS));
+                svgRoot.appendChild(GroupElement.translate(be, content_offsetX, y).toSvgElement(doc, svgNS));
                 y += be.getHeight() + 5;
 
                 if (y >= 290 - 35.5 || dr.getNextDrawer() != null ) {
@@ -78,5 +94,13 @@ public class DocRenderer {
 
     public void setPageDecorator(PageDecorator pageDecorator) {
         this.pageDecorator = pageDecorator;
+    }
+
+    public PageStyle getPageStyle() {
+        return pageStyle;
+    }
+
+    public void setPageStyle(PageStyle pageStyle) {
+        this.pageStyle = pageStyle;
     }
 }
