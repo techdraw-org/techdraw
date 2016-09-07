@@ -1,16 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Mada:400,300);
-@import '_basestyle.scss';
 
-$propertiesPaneColor: #f6f6f6;
+/*$propertiesPaneColor: #fcfcfc;*/
+$labelBackgroundColor: #dcdcdc;
+$inputBoxBackgroundColor: #f7f7f7;
+
+@import '_basestyle.scss';
 
 label {
   font-family: 'Mada', sans-serif;
-  font-weight: 300;
-}
-
-table th {
-  font-family: 'Mada', sans-serif;
-  text-align: left;
   font-weight: 300;
 }
 
@@ -164,6 +161,8 @@ pre {
   @extend .styled-g-2;
 
   padding: $boxSpacing /2;
+  background: $inputBoxBackgroundColor;
+  margin: 4pt 0;
 }
 
 .extra-options > span {
@@ -173,6 +172,7 @@ pre {
   > label {
     display: block;
     margin-bottom: $boxSpacing / 4;
+    @include box-label-style;
   }
 
   > input {
