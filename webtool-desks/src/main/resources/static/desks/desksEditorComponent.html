@@ -7,15 +7,17 @@
             <button class="remove" type="button" ng-click="$ctrl.removeGroup($index)">X</button>
         </div>
         <div class="content-box">
-            <div class="desk-group-material">
-                <span>
-                    <label for="decor_{{$index}}">Decor</label>
-                    <input id="decor_{{$index}}" ng-model="group.material.decor" required />
-                </span>
-                <span>
-                    <label for="width_{{$index}}">Width</label>
-                    <input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="group.material.width" required />
-                </span>
+            <div>
+                <div class="desk-group-material">
+                    <span>
+                        <span><label for="decor_{{$index}}">Decor</label></span>
+                        <span><input id="decor_{{$index}}" ng-model="group.material.decor" required /></span>
+                    </span>
+                    <span>
+                        <span><label for="width_{{$index}}">Width</label></span>
+                        <span><input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="group.material.width" required /></span>
+                    </span>
+                </div>
             </div>
             <div>
                 <table class="input_table">

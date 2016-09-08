@@ -1,12 +1,23 @@
 
 @import '_flexlayout.scss';
 
+@mixin box-style {
+  background: $inputBoxBackgroundColor;
+}
+
 @mixin box-label-style {
   font-family: 'Mada', sans-serif;
   text-align: left;
   font-weight: 400;
   background: $labelBackgroundColor;
   padding: 2px 4px;
+}
+
+@mixin box-input-style {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 4px;
+  border: solid 1px #dedede;
 }
 
 div.app-container {
@@ -88,7 +99,7 @@ div.app-container {
 }
 
 .input_table {
-  background: $inputBoxBackgroundColor;
+  @include box-style;
 
   th {
     @include box-label-style;
@@ -97,10 +108,7 @@ div.app-container {
   input[type="number"],
   input[type="text"],
   button.remove {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 4px;
-    border: solid 1px #dedede;
+    @include box-input-style;
   }
 
   input[type="number"]:only-child,
