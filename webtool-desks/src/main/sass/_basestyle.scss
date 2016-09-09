@@ -3,14 +3,21 @@
 
 @mixin box-style {
   background: $inputBoxBackgroundColor;
+  border-radius: 4px;
 }
 
 @mixin box-label-style {
-  font-family: 'Mada', sans-serif;
   text-align: left;
-  font-weight: 400;
   background: $labelBackgroundColor;
-  padding: 2px 4px;
+  padding: 4px;
+  font-size: 0.9em;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+@mixin box-label-top {
+  border-radius: 2px 2px 0 0;
+  text-align: center;
 }
 
 @mixin box-input-style {
@@ -18,6 +25,46 @@
   margin: 0;
   padding: 4px;
   border: solid 1px #dedede;
+  font-size: 0.8em;
+  font-family: 'Open Sans', sans-serif;
+}
+@mixin box-input-focus {
+  outline: 1px solid #70C070;
+  outline: 2px solid rgba(0,192,0,0.25);
+}
+
+.box {
+  @include box-style;
+
+  label {
+    @include box-label-style;
+  }
+
+  input {
+    @include box-input-style;
+  }
+
+  input:focus {
+    @include box-input-focus;
+  }
+}
+
+
+.button,
+.buttons input[type="number"],
+.buttons input[type="button"],
+.buttons button{
+  margin: 4pt;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 2px;
+  border: solid 1px #dedede;
+}
+
+.button-delete {
+  background: $colorDestructive;
 }
 
 div.app-container {
@@ -45,6 +92,7 @@ div.app-container {
     padding: 5pt 5pt 4pt;
     margin: 0;
     border: none;
+    font-family: 'Mada', sans-serif;
   }
 
   button:first-child {
@@ -103,12 +151,17 @@ div.app-container {
 
   th {
     @include box-label-style;
+    @include box-label-top;
   }
 
   input[type="number"],
   input[type="text"],
   button.remove {
     @include box-input-style;
+
+    &:focus {
+      @include box-input-focus;
+    }
   }
 
   input[type="number"]:only-child,
