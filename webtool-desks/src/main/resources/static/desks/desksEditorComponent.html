@@ -4,21 +4,25 @@
         <div style="display:flex">
             <div class="desk-group-title">Desks ({{group.material.decor}}, {{group.material.width}}mm)</div>
             <div class="flex-space"></div>
-            <button class="remove" type="button" ng-click="$ctrl.removeGroup($index)">X</button>
         </div>
         <div class="content-box">
-            <div class="desk-group-material">
-                <span>
-                    <label for="decor_{{$index}}">Decor</label>
-                    <input id="decor_{{$index}}" ng-model="group.material.decor" required />
-                </span>
-                <span>
-                    <label for="width_{{$index}}">Width</label>
-                    <input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="group.material.width" required />
-                </span>
+            <div>
+                <div class="desk-group-material">
+                    <span>
+                        <span><label for="decor_{{$index}}">Decor</label></span>
+                        <span><input id="decor_{{$index}}" ng-model="group.material.decor" required /></span>
+                    </span>
+                    <span>
+                        <span><label for="width_{{$index}}">Width</label></span>
+                        <span><input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="group.material.width" required /></span>
+                    </span>
+                </div>
+                <div class="buttons">
+                    <button class="button button-delete" type="button" ng-click="$ctrl.removeGroup($index)">Delete group</button>
+                </div>
             </div>
             <div>
-                <table>
+                <table class="input_table">
                     <thead>
                     <tr>
                         <th>Key</th>
@@ -51,36 +55,48 @@
             </div>
         </div>
     </div>
-    <div class="extra-options">
-        <span>
-            <label for="title">Title</label>
-            <input id="title" ng-model="$ctrl.model.documentTitle" />
-        </span>
-        <span>
-            <label for="header">Header</label>
-            <input id="header" ng-model="$ctrl.model.pageHeader" />
-        </span>
-        <span>
-            <label for="footer">Footer</label>
-            <input id="footer" ng-model="$ctrl.model.pageFooter" />
-        </span>
-    </div>
-    <div class="extra-options">
-        <span>
-            <label for="marginTop">Margin top</label>
-            <input id="marginTop" ng-model="$ctrl.model.pageStyle.marginTop" />
-        </span>
-        <span>
-            <label for="marginBottom">Margin bottom</label>
-            <input id="marginBottom" ng-model="$ctrl.model.pageStyle.marginBottom" />
-        </span>
-        <span>
-            <label for="marginLeft">Margin left</label>
-            <input id="marginLeft" ng-model="$ctrl.model.pageStyle.marginLeft" />
-        </span>
-        <span>
-            <label for="marginRight">Margin right</label>
-            <input id="marginRight" ng-model="$ctrl.model.pageStyle.marginRight" />
-        </span>
+    <div class="styled-g">
+        <div class="styled-gc-2-3" style="padding: 5px">
+            <div class="box">
+                <h3>Texts</h3>
+                <div class="big-form">
+                    <span>
+                        <span><label for="title">Title</label></span>
+                        <span><input id="title" ng-model="$ctrl.model.documentTitle" /></span>
+                    </span>
+                    <span>
+                        <span><label for="header">Header</label></span>
+                        <span><input id="header" ng-model="$ctrl.model.pageHeader" /></span>
+                    </span>
+                    <span>
+                        <span><label for="footer">Footer</label></span>
+                        <span><input id="footer" ng-model="$ctrl.model.pageFooter" /></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="styled-gc-1-3"  style="padding: 5px">
+            <div class="box">
+                <h3>Style tuning</h3>
+                <div class=" small-form">
+                    <span>
+                        <span><label for="marginTop">Margin top</label></span>
+                        <span><input id="marginTop" type="number" ng-model="$ctrl.model.pageStyle.marginTop" /></span>
+                    </span>
+                    <span>
+                        <span><label for="marginBottom">Margin bottom</label></span>
+                        <span><input id="marginBottom" type="number" ng-model="$ctrl.model.pageStyle.marginBottom" /></span>
+                    </span>
+                    <span>
+                        <span><label for="marginLeft">Margin left</label></span>
+                        <span><input id="marginLeft" type="number" ng-model="$ctrl.model.pageStyle.marginLeft" /></span>
+                    </span>
+                    <span>
+                        <span><label for="marginRight">Margin right</label></span>
+                        <span><input id="marginRight" type="number" ng-model="$ctrl.model.pageStyle.marginRight" /></span>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
