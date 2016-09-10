@@ -251,19 +251,44 @@ pre {
   }
 }
 
-.small-form {
+.small-form,
+.big-form {
   padding: 1px;
 }
 
-.small-form > span {
+.small-form > span,
+.big-form > span {
   @extend .styled-g;
 }
 
-.small-form > span label {
-  @extend .styled-gc-1-3;
+.small-form > span > *,
+.big-form > span > *{
+  position: relative;
+  padding: 1px;
 }
 
-.small-form > span input {
-  @extend .styled-gc-2-3;
+.small-form > span > * > label,
+.big-form > span > * > label{
+  display: block;
 }
 
+.small-form > span > * > input,
+.big-form > span > * > input {
+  width: 100%;
+}
+
+.small-form > span > *:nth-child(1) {
+  @extend .styled-gc-1-2;
+}
+
+.small-form > span > *:nth-child(2) {
+  @extend .styled-gc-1-2;
+}
+
+.big-form > span > *:nth-child(1) {
+  @extend .styled-gc-1-4;
+}
+
+.big-form > span > *:nth-child(2) {
+  @extend .styled-gc-3-4;
+}
