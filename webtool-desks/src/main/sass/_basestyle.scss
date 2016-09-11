@@ -8,7 +8,7 @@
 
 @mixin box-label-style {
   text-align: left;
-  background: $labelBackgroundColor;
+  border: solid 1px $labelBackgroundColor;
   padding: 4px;
   font-size: 0.85em;
   font-family: 'Open Sans', sans-serif;
@@ -22,26 +22,40 @@
 
 @mixin box-input-style {
   box-sizing: border-box;
+  background: #fff;
   margin: 0;
-  padding: 4px;
+  padding: 0 4px;
   border: solid 1px #dedede;
   font-size: 0.75em;
   font-family: 'Open Sans', sans-serif;
+  height: 2.2em;
 }
 @mixin box-input-focus {
   outline: 1px solid #70C070;
   outline: 2px solid rgba(0,192,0,0.25);
 }
 
+@mixin box-button-style {
+  font-size: 0.75em;
+  font-family: 'Open Sans', sans-serif;
+  height: 2.2em;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
 .box {
   @include box-style;
   overflow: hidden; /*prevent margin collapse*/
+  padding: 2px;
 
   label {
     @include box-label-style;
   }
 
-  input {
+  input:not([type]),
+  input[type="text"],
+  input[type="number"],
+  select {
     @include box-input-style;
   }
 
@@ -55,6 +69,15 @@
     font-weight: 400;
     margin-top: 0.55em;
     margin-bottom: 0.35em;
+    border: solid 1px $labelBackgroundColor;
+    margin: 0;
+    padding: 0.5em 0 0.15em;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  h1:first-child, h2:first-child, h3:first-child, h4:first-child {
+    border-radius: 2px 2px 0 0;
   }
 }
 
@@ -156,7 +179,8 @@ div.app-container {
 }
 
 .input_table {
-  @include box-style;
+  border-spacing: 1px;
+  margin: -1px;
 
   th {
     @include box-label-style;
@@ -165,7 +189,7 @@ div.app-container {
 
   input[type="number"],
   input[type="text"],
-  button.remove {
+  select {
     @include box-input-style;
 
     &:focus {
@@ -174,7 +198,12 @@ div.app-container {
   }
 
   input[type="number"]:only-child,
-  input[type="text"]:only-child {
+  input[type="text"]:only-child,
+  select:only-child {
     width: 100%;
+  }
+
+  button {
+    @include box-button-style;
   }
 }

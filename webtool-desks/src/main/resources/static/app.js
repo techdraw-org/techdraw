@@ -21,6 +21,9 @@ angular
         templateUrl: "desks/desksEditorComponent.html",
         bindings: { model: '=' },
         controller : function(ConfirmationService,ToolbarService) {
+            this.computeMaterialName = function(material) {
+                return material.decor + " " + material.width + "mm";
+            };
             this.removeGroup = function(index){
                 var vm = this;
                 ConfirmationService.open({
@@ -69,22 +72,16 @@ angular
     })
     .controller('DesksController', function($http, $window, $localStorage, $scope, ngDialog, ConfirmationService) {
         this.model = {
-            groups : [
-                {
-                    material : { decor: 'Svetly buk', width : 18},
-                    desks: [
-                        {key: 'a01', a: 500, b: 100, edges: [true, true, true, true]},
-                        {key: 'a02', a: 300, b: 200, edges: [true, false, true, false]},
-                    ]
-                },
-                {
-                    material : { decor: 'Svetly buk', width : 12},
-                    desks: [
-                        {key: 'b01', a: 300, b: 200, edges: [true, false, true, false]},
-                        {key: 'c01', a: 300, b: 200, edges: [true, false, true, false]},
-                        {key: 'd01', a: 300, b: 200, edges: [true, false, true, false]}
-                    ]
-                }
+            materials : [
+                { decor: 'Svetly buk', width : 18},
+                { decor: 'Svetly buk', width : 12}
+            ],
+            desks: [
+                {key: 'a01', a: 500, b: 100, edges: [true, true, true, true], material: "0"},
+                {key: 'a02', a: 300, b: 200, edges: [true, false, true, false], material: "0"},
+                {key: 'b01', a: 300, b: 200, edges: [true, false, true, false], material: "1"},
+                {key: 'c01', a: 300, b: 200, edges: [true, false, true, false], material: "1"},
+                {key: 'd01', a: 300, b: 200, edges: [true, false, true, false], material: "1"}
             ],
             pageStyle : {
                 marginTop : 18,

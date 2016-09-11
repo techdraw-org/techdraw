@@ -1,58 +1,62 @@
 
 <form class="styled-form" ng-submit="false">
-    <div class="desk-group" ng-repeat="group in $ctrl.model.groups">
-        <div style="display:flex">
-            <div class="desk-group-title">Desks ({{group.material.decor}}, {{group.material.width}}mm)</div>
-            <div class="flex-space"></div>
+    <div>
+        <div class="box" style="display: inline-block;">
+            <h3>Materials</h3>
+            <table class="input_table">
+                <thead>
+                <tr>
+                    <!--<th></th>-->
+                    <th>Decor</th>
+                    <th>Width</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="material in $ctrl.model.materials">
+                        <!--<td>#{{$index}}</td>-->
+                        <td><input id="decor_{{$index}}" type="text" ng-model="material.decor" required /></td>
+                        <td><input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="material.width" required /></td>
+                        <td><button type="button" ng-click="$ctrl.removeGroup($index)">Delete group</button></td>
+                    </tr>
+            </table>
         </div>
-        <div class="content-box">
-            <div>
-                <div class="desk-group-material">
-                    <span>
-                        <span><label for="decor_{{$index}}">Decor</label></span>
-                        <span><input id="decor_{{$index}}" ng-model="group.material.decor" required /></span>
-                    </span>
-                    <span>
-                        <span><label for="width_{{$index}}">Width</label></span>
-                        <span><input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="group.material.width" required /></span>
-                    </span>
-                </div>
-                <div class="buttons">
-                    <button class="button button-delete" type="button" ng-click="$ctrl.removeGroup($index)">Delete group</button>
-                </div>
-            </div>
-            <div>
-                <table class="input_table">
-                    <thead>
-                    <tr>
-                        <th>Key</th>
-                        <th>a</th>
-                        <th>b</th>
-                        <th>Edges</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="desk in group.desks">
-                        <td><input type="text" placeholder="key" ng-model="desk.key" /></td>
-                        <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
-                        <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
-                        <td>
-                            <input type="checkbox" ng-model="desk.edges[0]" />
-                            <input type="checkbox" ng-model="desk.edges[1]" />
-                            <input type="checkbox" ng-model="desk.edges[2]" />
-                            <input type="checkbox" ng-model="desk.edges[3]" />
-                        </td>
-                        <td>
-                            <button class="remove" type="button" ng-click="$ctrl.removeDesk(group, $index)">X</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="buttons">
-                    <button type="button" ng-click="$ctrl.addDesk(group)">Add desk</button>
-                </div>
-            </div>
+    </div>
+    <div class="box" style="display: inline-block">
+        <h3>Desks</h3>
+        <table class="input_table">
+            <thead>
+            <tr>
+                <th>Material</th>
+                <th>Key</th>
+                <th>a</th>
+                <th>b</th>
+                <th>Modifiers</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="desk in $ctrl.model.desks">
+                <td><select ng-options="idx as $ctrl.computeMaterialName(option) for (idx,option) in $ctrl.model.materials"
+                            ng-model="desk.material"></select></td>
+                <td><input type="text" placeholder="key" ng-model="desk.key" /></td>
+                <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
+                <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
+                <td>
+                    Edges:
+                    <input type="checkbox" ng-model="desk.edges[0]" />
+                    <input type="checkbox" ng-model="desk.edges[1]" />
+                    <input type="checkbox" ng-model="desk.edges[2]" />
+                    <input type="checkbox" ng-model="desk.edges[3]" />
+                </td>
+                <td>
+                    <button class="remove" type="button" ng-click="$ctrl.removeDesk(group, $index)">X</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="buttons">
+            <button type="button" ng-click="$ctrl.addDesk(group)">Add desk</button>
         </div>
     </div>
     <div class="styled-g">
