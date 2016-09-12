@@ -9,6 +9,7 @@ $inputBoxBackgroundColor: #f3f3f3;
 $colorDestructive: #ff9999;
 
 @import '_basestyle.scss';
+@import '_tables.scss';
 
 label {
   font-family: 'Mada', sans-serif;
@@ -45,37 +46,6 @@ body {
   font-size: 22pt;
   font-weight: bold;
 }
-
-input[type="submit"],
-input[type="button"],
-button {
-  border: none;
-  background: #e7e7e7;
-  padding: 0.3em 0.5em;
-  margin: 0.2em 0.1em;
-  vertical-align: baseline;
-
-  &.remove {
-    margin: 0;
-    padding: 2pt;
-    width: 18pt;
-    height: 18pt;
-    background: $colorDestructive;
-  }
-
-  &:hover {
-    background: #f3f3f3;
-  }
-
-  &:active {
-    background: #dadada;
-  }
-
-  &.primary {
-    background: #48b2f0;
-  }
-}
-
 
 .buttons {
   display: flex;
@@ -291,4 +261,12 @@ pre {
 
 .big-form > span > *:nth-child(2) {
   @extend .styled-gc-3-4;
+}
+
+.styled-g.boxes  {
+  margin: -4px;
+}
+
+.styled-g.boxes > div {
+  padding: 4px;
 }

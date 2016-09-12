@@ -67,10 +67,8 @@
     text-align: center;
     font-family: "Mada", sans-serif;
     font-weight: 400;
-    margin-top: 0.55em;
-    margin-bottom: 0.35em;
     border: solid 1px $labelBackgroundColor;
-    margin: 0;
+    margin: 1px 1px 0;
     padding: 0.5em 0 0.15em;
     letter-spacing: 0.05em;
     margin-bottom: 2px;
@@ -78,6 +76,14 @@
 
   h1:first-child, h2:first-child, h3:first-child, h4:first-child {
     border-radius: 2px 2px 0 0;
+  }
+
+  > div {
+    margin: 1px 1px 0;
+  }
+
+  > div:last-child {
+    margin-bottom: 1px;
   }
 }
 
@@ -93,6 +99,32 @@
   padding: 4px 8px;
   border-radius: 2px;
   border: solid 1px #dedede;
+  box-sizing: border-box;
+
+
+  background: #e7e7e7;
+  margin: 0 4px;
+  /*vertical-align: baseline;*/
+
+  &.remove {
+    margin: 0;
+    padding: 2pt;
+    width: 18pt;
+    height: 18pt;
+    background: $colorDestructive;
+  }
+
+  &:hover {
+    background: #f3f3f3;
+  }
+
+  &:active {
+    background: #dadada;
+  }
+
+  &.primary {
+    background: #48b2f0;
+  }
 }
 
 .button-delete {
@@ -176,34 +208,4 @@ div.app-container {
 
   height: 100%;
   position: relative;
-}
-
-.input_table {
-  border-spacing: 1px;
-  margin: -1px;
-
-  th {
-    @include box-label-style;
-    @include box-label-top;
-  }
-
-  input[type="number"],
-  input[type="text"],
-  select {
-    @include box-input-style;
-
-    &:focus {
-      @include box-input-focus;
-    }
-  }
-
-  input[type="number"]:only-child,
-  input[type="text"]:only-child,
-  select:only-child {
-    width: 100%;
-  }
-
-  button {
-    @include box-button-style;
-  }
 }

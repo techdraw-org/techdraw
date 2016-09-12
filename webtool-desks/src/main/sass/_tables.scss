@@ -1,0 +1,59 @@
+
+td.minimum,
+th.minimum {
+  width: 1px;
+  white-space: nowrap;
+}
+
+td.short,
+th.short {
+  width: 60px;
+}
+
+td.medium,
+th.medium {
+  width: 120px;
+}
+
+.box > .input_table {
+  width: 100%
+}
+
+.input_table {
+  border-spacing: 1px;
+
+  th {
+    @include box-label-style;
+    @include box-label-top;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  select {
+    @include box-input-style;
+
+    &:focus {
+      @include box-input-focus;
+    }
+  }
+
+  input[type="number"]:only-child,
+  input[type="text"]:only-child,
+  select:only-child {
+    width: 100%;
+  }
+
+  button {
+    @include box-button-style;
+  }
+
+  td > div {
+    border: solid 1px #dedede;
+    background: #fafafa;
+    padding: 0 4px;
+    font-size: 0.75em;
+    font-family: 'Open Sans', sans-serif;
+    height: 2.2em;
+    box-sizing: border-box;
+  }
+}

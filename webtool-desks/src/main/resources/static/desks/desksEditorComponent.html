@@ -1,66 +1,68 @@
 
 <form class="styled-form" ng-submit="false">
-    <div>
-        <div class="box" style="display: inline-block;">
-            <h3>Materials</h3>
-            <table class="input_table">
-                <thead>
-                <tr>
-                    <!--<th></th>-->
-                    <th>Decor</th>
-                    <th>Width</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="material in $ctrl.model.materials">
-                        <!--<td>#{{$index}}</td>-->
-                        <td><input id="decor_{{$index}}" type="text" ng-model="material.decor" required /></td>
-                        <td><input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="material.width" required /></td>
-                        <td><button type="button" ng-click="$ctrl.removeGroup($index)">Delete group</button></td>
+    <div class="styled-g boxes" style="margin-bottom: 4px;">
+        <div class="styled-gc-1-3">
+            <div class="box">
+                <h3>Materials</h3>
+                <table class="input_table">
+                    <thead>
+                    <tr>
+                        <!--<th></th>-->
+                        <th>Decor</th>
+                        <th>Width</th>
+                        <th class="minimum"></th>
                     </tr>
-            </table>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="material in $ctrl.model.materials">
+                            <!--<td>#{{$index}}</td>-->
+                            <td><input id="decor_{{$index}}" type="text" ng-model="material.decor" required /></td>
+                            <td><input id="width_{{$index}}" type="number" placeholder="width" min="0" max="1000" step="1"  ng-model="material.width" required /></td>
+                            <td class="minimum"><button class="button" type="button" ng-click="$ctrl.removeGroup($index)">Delete group</button></td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+        <div class="styled-gc-2-3">
+            <div class="box">
+                <h3>Desks</h3>
+                <table class="input_table" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th class="medium">Material</th>
+                        <th class="medium">Key</th>
+                        <th class="short">a</th>
+                        <th class="short">b</th>
+                        <th>Modifiers</th>
+                        <th class="minimum"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="desk in $ctrl.model.desks">
+                        <td><select ng-options="idx as $ctrl.computeMaterialName(option) for (idx,option) in $ctrl.model.materials"
+                                    ng-model="desk.material"></select></td>
+                        <td><input type="text" placeholder="key" ng-model="desk.key" /></td>
+                        <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
+                        <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
+                        <td><div>
+                            Edges:
+                            <input type="checkbox" ng-model="desk.edges[0]" />
+                            <input type="checkbox" ng-model="desk.edges[1]" />
+                            <input type="checkbox" ng-model="desk.edges[2]" />
+                            <input type="checkbox" ng-model="desk.edges[3]" />
+                        </div></td>
+                        <td><button class="button remove" type="button" ng-click="$ctrl.removeDesk(group, $index)">X</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="buttons">
+                    <button type="button" ng-click="$ctrl.addDesk(group)">Add desk</button>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="box" style="display: inline-block">
-        <h3>Desks</h3>
-        <table class="input_table">
-            <thead>
-            <tr>
-                <th>Material</th>
-                <th>Key</th>
-                <th>a</th>
-                <th>b</th>
-                <th>Modifiers</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="desk in $ctrl.model.desks">
-                <td><select ng-options="idx as $ctrl.computeMaterialName(option) for (idx,option) in $ctrl.model.materials"
-                            ng-model="desk.material"></select></td>
-                <td><input type="text" placeholder="key" ng-model="desk.key" /></td>
-                <td><input type="number" placeholder="a" min="1" max="10000" step="1" ng-model="desk.a" required /></td>
-                <td><input type="number" placeholder="b" min="1" max="10000" step="1" ng-model="desk.b" required /></td>
-                <td>
-                    Edges:
-                    <input type="checkbox" ng-model="desk.edges[0]" />
-                    <input type="checkbox" ng-model="desk.edges[1]" />
-                    <input type="checkbox" ng-model="desk.edges[2]" />
-                    <input type="checkbox" ng-model="desk.edges[3]" />
-                </td>
-                <td>
-                    <button class="remove" type="button" ng-click="$ctrl.removeDesk(group, $index)">X</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="buttons">
-            <button type="button" ng-click="$ctrl.addDesk(group)">Add desk</button>
-        </div>
-    </div>
-    <div class="styled-g">
-        <div class="styled-gc-2-3" style="padding: 5px">
+    <div class="styled-g boxes">
+        <div class="styled-gc-2-3">
             <div class="box">
                 <h3>Texts</h3>
                 <div class="big-form">
@@ -79,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <div class="styled-gc-1-3"  style="padding: 5px">
+        <div class="styled-gc-1-3">
             <div class="box">
                 <h3>Style tuning</h3>
                 <div class=" small-form">
