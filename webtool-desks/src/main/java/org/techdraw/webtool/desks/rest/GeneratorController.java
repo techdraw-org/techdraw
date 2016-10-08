@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.techdraw.desks.Desk;
 import org.techdraw.sheets.*;
 import org.techdraw.sheets.api.PartGroup;
+import org.techdraw.webtool.desks.models.DeskMaterialModel;
 import org.techdraw.webtool.desks.models.DesksModel;
 import org.w3c.dom.Document;
 
@@ -67,19 +68,25 @@ public class GeneratorController {
             docPartDrawers.add(new TitleDrawer(model.documentTitle));
 
         // add groups
-        model.groups.stream().forEach(group -> {
+        for(int i = 0; i < model.materials.size(); i++ ) {
+            int finalI = i;
+            DeskMaterialModel material = model.materials.get(i);
+
             try {
                 PartGroup partGroup = new PartGroup();
-                partGroup.children = group.desks.stream().map(Desk::createElement).collect(Collectors.toList());
+                partGroup.children = model.desks.stream()
+                        .filter(deskModel -> Integer.valueOf(deskModel.material ) == finalI)
+                        .map(m -> new Desk(m.a, m.b, m.width, m.edges).createElement())
+                        .collect(Collectors.toList());
                 partGroup.metadata = new HashMap<>();
-                partGroup.metadata.put("Desk decor:", group.material.decor);
-                partGroup.metadata.put("Desk width:", String.format("%.1f", group.material.width));
+                partGroup.metadata.put("Desk decor:", material.decor);
+                partGroup.metadata.put("Desk width:", String.format("%.1f", material.width));
                 docPartDrawers.add(new SimpleGroupDrawer(partGroup));
             } catch (Exception e)  {
-                System.err.println("ignoring: " + group);
+                System.err.println("ignoring: " + material);
                 e.printStackTrace();
             }
-        });
+        };
 
         return renderer.makeDoc(docPartDrawers);
     }

@@ -34,8 +34,10 @@ angular
                     vm.model.groups.splice(index,1);
                 });
             };
-            this.addDesk = function(group) {
-                group.desks.push({});
+            this.addDesk = function() {
+                this.model.desks.push({
+                    edges: [true, true, true, true]
+                });
             };
             this.removeDesk = function(group,index) {
                 group.desks.splice(index,1);
@@ -93,14 +95,11 @@ angular
         this.formattedPreview = false;
 
         this.checkStructure = function() {
-            for(var gi = 0; gi < this.model.groups.length; gi++) {
-                var group = this.model.groups[gi];
-                for(var di = 0; di < group.desks.length; di++) {
-                    var desk = group.desks[di];
-                    var e = desk.edges;
-                    if(e)
-                        desk.edges = [e[0], e[1], e[2], e[3]];
-                }
+            for(var di = 0; di < this.model.desks.length; di++) {
+                var desk = this.model.desks[di];
+                var e = desk.edges;
+                if(e)
+                    desk.edges = [e[0], e[1], e[2], e[3]];
             }
         };
         this.generateSVG = function() {
