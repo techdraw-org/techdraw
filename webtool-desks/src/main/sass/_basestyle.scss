@@ -15,6 +15,13 @@
   font-weight: 600;
 }
 
+@mixin box-label-style-horizontal {
+  box-sizing: border-box;
+  line-height: 1.94117647059em;
+  height: 1.94117647059em;
+  padding: 0 4px;
+}
+
 @mixin box-label-top {
   border-radius: 2px 2px 0 0;
   text-align: center;

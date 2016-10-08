@@ -67,16 +67,28 @@
                 <h3>Texts</h3>
                 <div class="big-form">
                     <span>
-                        <span><label for="title">Title</label></span>
-                        <span><input id="title" ng-model="$ctrl.model.documentTitle" /></span>
+                        <span><label for="title">Document title</label></span>
+                        <span><input
+                                id="title"
+                                ng-model="$ctrl.model.documentTitle"
+                                placeholder="Title at the beginning of the generated document"
+                        /></span>
                     </span>
                     <span>
-                        <span><label for="header">Header</label></span>
-                        <span><input id="header" ng-model="$ctrl.model.pageHeader" /></span>
+                        <span><label for="header">Page header</label></span>
+                        <span><input
+                                id="header"
+                                ng-model="$ctrl.model.pageHeader"
+                                placeholder="Header appearing on the top of each page"
+                        /></span>
                     </span>
                     <span>
-                        <span><label for="footer">Footer</label></span>
-                        <span><input id="footer" ng-model="$ctrl.model.pageFooter" /></span>
+                        <span><label for="footer">Page footer</label></span>
+                        <span><input
+                                id="footer"
+                                ng-model="$ctrl.model.pageFooter"
+                                placeholder="Footer appearing on the bottom of each page"
+                        /></span>
                     </span>
                 </div>
             </div>

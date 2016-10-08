@@ -133,7 +133,7 @@ pre {
   > label {
     display: block;
     margin-bottom: $boxSpacing / 4;
-    @include box-label-style;
+    @include box-label-style-horizontal;
   }
 
   > input {
@@ -240,6 +240,7 @@ pre {
 .small-form > span > * > label,
 .big-form > span > * > label{
   display: block;
+  @include box-label-style-horizontal;
 }
 
 .small-form > span > * > input,
