@@ -1,15 +1,12 @@
 package org.techdraw.sheets;
 
 import org.techdraw.sheets.api.BoxedElement;
-import org.techdraw.sheets.api.PartGroup;
 import org.techdraw.sheets.containers.GroupElement;
 import org.techdraw.sheets.containers.TableElement;
 import org.techdraw.sheets.elements.LineElement;
 import org.techdraw.sheets.elements.TextElement;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,14 +14,20 @@ import java.util.stream.Collectors;
  */
 public class SimpleGroupDrawer implements DocPartDrawer {
 
-    private PartGroup group;
+    public Collection<BoxedElement> elements;
+    public Map<String, String> metadata;
 
-    public SimpleGroupDrawer(PartGroup group) {
-        this.group = group;
+    public SimpleGroupDrawer(Collection<BoxedElement> elements) {
+        this(elements, new HashMap<>());
     }
 
-    private DrawResult createContentGroup(PartGroup group, double xmax, double maxHeight) {
-        List<BoxedElement> remainingElements = group.children.stream()
+    public SimpleGroupDrawer(Collection<BoxedElement> elements, Map<String, String> metadata) {
+        this.elements = elements;
+        this.metadata = metadata;
+    }
+
+    private DrawResult createContentGroup(double xmax, double maxHeight) {
+        List<BoxedElement> remainingElements = elements.stream()
                 .sorted((a,b) -> Double.compare(b.getHeight(),a.getHeight()))
                 .collect(Collectors.toList());
 
@@ -53,7 +56,7 @@ public class SimpleGroupDrawer implements DocPartDrawer {
 
         DocPartDrawer nextDrawer = null;
         if(!remainingElements.isEmpty())
-            nextDrawer = new SimpleGroupDrawer(new PartGroup(remainingElements, group.metadata));
+            nextDrawer = new SimpleGroupDrawer(remainingElements, metadata);
 
         return new DrawResult(contentGroup, nextDrawer);
     }
@@ -69,7 +72,7 @@ public class SimpleGroupDrawer implements DocPartDrawer {
         table.setSpacing(2);
         table.setX(5);
         table.setY(4);
-        for(Map.Entry<String,String> e : group.metadata.entrySet()) {
+        for(Map.Entry<String,String> e : metadata.entrySet()) {
             table.addRow(
                     new TextElement(e.getKey(),"ISOCPEUR", 5 ),
                     new TextElement(e.getValue(), "ISOCPEUR", 5)
@@ -81,7 +84,7 @@ public class SimpleGroupDrawer implements DocPartDrawer {
         g.addChild(new LineElement(0,0, xmax +10,0));
         g.addChild(new LineElement(0,y, xmax +10,y));
 
-        DrawResult contentResult = createContentGroup(group, xmax, maxHeight - y);
+        DrawResult contentResult = createContentGroup(xmax, maxHeight - y);
         GroupElement groupElement = (GroupElement) contentResult.getBoxedElement();
         groupElement.setMatrixTransform(1,0,0,1,0, y);
 

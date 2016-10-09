@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.techdraw.desks.Desk;
 import org.techdraw.sheets.*;
-import org.techdraw.sheets.api.PartGroup;
+import org.techdraw.sheets.api.BoxedElement;
 import org.techdraw.webtool.desks.models.DeskMaterialModel;
 import org.techdraw.webtool.desks.models.DesksModel;
 import org.w3c.dom.Document;
@@ -73,15 +73,15 @@ public class GeneratorController {
             DeskMaterialModel material = model.materials.get(i);
 
             try {
-                PartGroup partGroup = new PartGroup();
-                partGroup.children = model.desks.stream()
-                        .filter(deskModel -> Integer.valueOf(deskModel.material ) == finalI)
+                List<BoxedElement> elements = model.desks.stream()
+                        .filter(deskModel -> Integer.valueOf(deskModel.material) == finalI)
                         .map(m -> new Desk(m.a, m.b, m.width, m.edges).createElement())
                         .collect(Collectors.toList());
-                partGroup.metadata = new HashMap<>();
-                partGroup.metadata.put("Desk decor:", material.decor);
-                partGroup.metadata.put("Desk width:", String.format("%.1f", material.width));
-                docPartDrawers.add(new SimpleGroupDrawer(partGroup));
+
+                HashMap<String, String> metadata = new HashMap<>();
+                metadata.put("Desk decor:", material.decor);
+                metadata.put("Desk width:", String.format("%.1f", material.width));
+                docPartDrawers.add(new SimpleGroupDrawer(elements, metadata));
             } catch (Exception e)  {
                 System.err.println("ignoring: " + material);
                 e.printStackTrace();
