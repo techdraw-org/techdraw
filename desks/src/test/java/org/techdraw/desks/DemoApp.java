@@ -3,10 +3,10 @@ package org.techdraw.desks;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.techdraw.sheets.DocPartDrawer;
-import org.techdraw.sheets.DocRenderer;
-import org.techdraw.sheets.SimplePageDecorator;
-import org.techdraw.sheets.TitleDrawer;
+import org.techdraw.sheets.doc.DocRenderer;
+import org.techdraw.sheets.doc.decorators.SimplePageDecorator;
+import org.techdraw.sheets.doc.drawers.TitleDrawer;
+import org.techdraw.sheets.doc.spi.DocDrawer;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
 
@@ -65,11 +65,11 @@ public class DemoApp {
         DocRenderer renderer = new DocRenderer();
         renderer.setPageDecorator(pageDecorator);
 
-        List<DocPartDrawer> docPartDrawers = new ArrayList<>();
-        docPartDrawers.add(new TitleDrawer("TechDraw:desks"));
-        docPartDrawers.addAll(desksPartGroupGenerator.createDeskGroups(parts));
+        List<DocDrawer> docDrawers = new ArrayList<>();
+        docDrawers.add(new TitleDrawer("TechDraw:desks"));
+        docDrawers.addAll(desksPartGroupGenerator.createDeskGroups(parts));
 
-        Document[] documents = renderer.makeDoc(docPartDrawers);
+        Document[] documents = renderer.makeDoc(docDrawers);
 
         return Arrays.stream(documents)
                 .map(document -> {

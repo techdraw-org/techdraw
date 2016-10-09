@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.techdraw.desks.Desk;
-import org.techdraw.sheets.*;
-import org.techdraw.sheets.api.BoxedElement;
+import org.techdraw.sheets.doc.DocRenderer;
+import org.techdraw.sheets.doc.decorators.SimplePageDecorator;
+import org.techdraw.sheets.doc.drawers.SimpleGroupDrawer;
+import org.techdraw.sheets.doc.drawers.TitleDrawer;
+import org.techdraw.sheets.doc.spi.DocDrawer;
+import org.techdraw.sheets.elements.spi.BoxedElement;
 import org.techdraw.webtool.desks.models.DeskMaterialModel;
 import org.techdraw.webtool.desks.models.DesksModel;
 import org.w3c.dom.Document;
@@ -61,11 +65,11 @@ public class GeneratorController {
         renderer.setPageDecorator(pageDecorator);
         renderer.setPageStyle(model.pageStyle);
 
-        List<DocPartDrawer> docPartDrawers = new ArrayList<>();
+        List<DocDrawer> docDrawers = new ArrayList<>();
 
         // add title, if present
         if(model.documentTitle != null)
-            docPartDrawers.add(new TitleDrawer(model.documentTitle));
+            docDrawers.add(new TitleDrawer(model.documentTitle));
 
         // add groups
         for(int i = 0; i < model.materials.size(); i++ ) {
@@ -81,14 +85,14 @@ public class GeneratorController {
                 HashMap<String, String> metadata = new HashMap<>();
                 metadata.put("Desk decor:", material.decor);
                 metadata.put("Desk width:", String.format("%.1f", material.width));
-                docPartDrawers.add(new SimpleGroupDrawer(elements, metadata));
+                docDrawers.add(new SimpleGroupDrawer(elements, metadata));
             } catch (Exception e)  {
                 System.err.println("ignoring: " + material);
                 e.printStackTrace();
             }
         };
 
-        return renderer.makeDoc(docPartDrawers);
+        return renderer.makeDoc(docDrawers);
     }
 
     private String renderSVG(DesksModel model) {

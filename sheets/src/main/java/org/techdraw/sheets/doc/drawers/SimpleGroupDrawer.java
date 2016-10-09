@@ -1,10 +1,11 @@
-package org.techdraw.sheets;
+package org.techdraw.sheets.doc.drawers;
 
-import org.techdraw.sheets.api.BoxedElement;
-import org.techdraw.sheets.containers.GroupElement;
-import org.techdraw.sheets.containers.TableElement;
+import org.techdraw.sheets.doc.spi.DocDrawer;
 import org.techdraw.sheets.elements.LineElement;
 import org.techdraw.sheets.elements.TextElement;
+import org.techdraw.sheets.elements.containers.GroupElement;
+import org.techdraw.sheets.elements.containers.TableElement;
+import org.techdraw.sheets.elements.spi.BoxedElement;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * @author Miroslav Kravec
  */
-public class SimpleGroupDrawer implements DocPartDrawer {
+public class SimpleGroupDrawer implements DocDrawer {
 
     public Collection<BoxedElement> elements;
     public Map<String, String> metadata;
@@ -54,7 +55,7 @@ public class SimpleGroupDrawer implements DocPartDrawer {
         }
         contentGroup.setHeight(ynext + innerOffset + 10);
 
-        DocPartDrawer nextDrawer = null;
+        DocDrawer nextDrawer = null;
         if(!remainingElements.isEmpty())
             nextDrawer = new SimpleGroupDrawer(remainingElements, metadata);
 

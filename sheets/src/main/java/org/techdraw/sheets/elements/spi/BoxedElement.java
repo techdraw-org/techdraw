@@ -1,4 +1,4 @@
-package org.techdraw.sheets.api;
+package org.techdraw.sheets.elements.spi;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

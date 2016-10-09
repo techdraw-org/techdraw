@@ -1,7 +1,6 @@
 package org.techdraw.webtool.desks.models;
 
-import models.PageStyle;
-import org.techdraw.desks.Desk;
+import org.techdraw.sheets.doc.PageStyle;
 
 import java.util.ArrayList;
 

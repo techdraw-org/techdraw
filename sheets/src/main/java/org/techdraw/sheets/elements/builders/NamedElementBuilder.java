@@ -1,8 +1,8 @@
-package org.techdraw.sheets.elements.mix;
+package org.techdraw.sheets.elements.builders;
 
-import org.techdraw.sheets.api.BoxedElement;
-import org.techdraw.sheets.containers.GroupElement;
 import org.techdraw.sheets.elements.TextElement;
+import org.techdraw.sheets.elements.containers.GroupElement;
+import org.techdraw.sheets.elements.spi.BoxedElement;
 
 /**
  * @author Miroslav Kravec

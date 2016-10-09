@@ -1,4 +1,4 @@
-package models;
+package org.techdraw.sheets.doc;
 
 /**
  * Stores page style information.

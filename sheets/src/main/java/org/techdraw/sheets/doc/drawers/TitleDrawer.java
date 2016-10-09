@@ -1,11 +1,14 @@
-package org.techdraw.sheets;
+package org.techdraw.sheets.doc.drawers;
 
+import org.techdraw.sheets.doc.spi.DocDrawer;
 import org.techdraw.sheets.elements.TextElement;
 
 /**
+ * Drawer which draws header/title
+ *
  * @author Miroslav Kravec
  */
-public class TitleDrawer implements DocPartDrawer {
+public class TitleDrawer implements DocDrawer {
     private final String titleText;
 
     public TitleDrawer(String titleText) {

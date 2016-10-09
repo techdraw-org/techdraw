@@ -1,6 +1,6 @@
-package org.techdraw.sheets.containers;
+package org.techdraw.sheets.elements.containers;
 
-import org.techdraw.sheets.api.BoxedElement;
+import org.techdraw.sheets.elements.spi.BoxedElement;
 
 /**
  * @author Miroslav Kravec

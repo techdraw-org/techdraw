@@ -1,5 +1,6 @@
-package org.techdraw.sheets;
+package org.techdraw.sheets.doc.decorators;
 
+import org.techdraw.sheets.doc.spi.PageDecorator;
 import org.techdraw.sheets.elements.TextElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

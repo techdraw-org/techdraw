@@ -1,9 +1,10 @@
-package org.techdraw.sheets;
+package org.techdraw.sheets.doc;
 
-import models.PageStyle;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
-import org.techdraw.sheets.api.BoxedElement;
-import org.techdraw.sheets.containers.GroupElement;
+import org.techdraw.sheets.doc.spi.DocDrawer;
+import org.techdraw.sheets.doc.spi.PageDecorator;
+import org.techdraw.sheets.elements.containers.GroupElement;
+import org.techdraw.sheets.elements.spi.BoxedElement;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,7 +24,7 @@ public class DocRenderer {
 
     private PageStyle pageStyle;
 
-    public Document[] makeDoc(Collection<DocPartDrawer> groups) {
+    public Document[] makeDoc(Collection<DocDrawer> groups) {
         PageStyle pageStyle = this.pageStyle;
         if(pageStyle == null)
             pageStyle = DEFAULT_STYLE;
@@ -50,8 +51,8 @@ public class DocRenderer {
 
         // TODO: find better fix
         Locale.setDefault(Locale.ENGLISH);
-        for (DocPartDrawer g : groups) {
-            DocPartDrawer current = g;
+        for (DocDrawer g : groups) {
+            DocDrawer current = g;
             do {
                 Element svgRoot;
                 if (doc == null) {
@@ -70,7 +71,7 @@ public class DocRenderer {
                     svgRoot = doc.getDocumentElement();
                 }
 
-                DocPartDrawer.DrawResult dr = current.draw(content_sizeX, content_sizeY - y);
+                DocDrawer.DrawResult dr = current.draw(content_sizeX, content_sizeY - y);
                 BoxedElement be = dr.getBoxedElement();
                 svgRoot.appendChild(GroupElement.translate(be, content_offsetX, y).toSvgElement(doc, svgNS));
                 y += be.getHeight() + 5;

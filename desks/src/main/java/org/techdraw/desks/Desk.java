@@ -1,11 +1,11 @@
 package org.techdraw.desks;
 
-import org.techdraw.sheets.api.BoxedElement;
-import org.techdraw.sheets.containers.CustomBoxedElement;
-import org.techdraw.sheets.containers.GroupElement;
 import org.techdraw.sheets.elements.LineElement;
 import org.techdraw.sheets.elements.TextElement;
-import org.techdraw.sheets.elements.mix.NamedElementBuilder;
+import org.techdraw.sheets.elements.builders.NamedElementBuilder;
+import org.techdraw.sheets.elements.containers.CustomBoxedElement;
+import org.techdraw.sheets.elements.containers.GroupElement;
+import org.techdraw.sheets.elements.spi.BoxedElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

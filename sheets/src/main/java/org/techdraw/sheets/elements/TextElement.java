@@ -1,7 +1,7 @@
 package org.techdraw.sheets.elements;
 
 import org.apache.batik.ext.awt.g2d.DefaultGraphics2D;
-import org.techdraw.sheets.containers.AbstractBoxedElement;
+import org.techdraw.sheets.elements.containers.AbstractBoxedElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
